@@ -1,0 +1,44 @@
+here is a box containing N balls. The i-th ball has the integer Ai written on it. Snuke can perform the following operation any number of times:
+
+Take out two balls from the box. Then, return them to the box along with a new ball, on which the absolute difference of the integers written on the two balls is written.
+Determine whether it is possible for Snuke to reach the state where the box contains a ball on which the integer K is written.
+-----------------------------------------------------------------
+
+Firstly notice that the gcd of all numbers in the ball is the same. 
+
+This is because gcd(a, b) = gcd(a, a - b) = gcd(b, a - b)
+
+So, eventually we will get a ball with the gcd written on it.
+
+Once we have that, we can use the gcd ball and the maximum number ball, to get every multiple of gcd upto the maximum number ball.
+
+For example gcd = g, Max = ng
+
+We get (n - 1)g
+
+And then (n - 2)g and so on.
+
+We get all numbers in the series g, 2g, 3g, 4g, ... ng.
+
+I made the mistake where I just said k is possible if it a multiple of gcd. I forgot to check that it has to be smaller than the maximum.
+
+----------------------------------------------------------
+
+int main()
+{
+    int no_of_numbers, desired_number;
+    scanf("%d %d", &no_of_numbers, &desired_number);
+
+    int array_gcd, largest_number = 0;
+    for(int i = 1; i <= no_of_numbers; i++)
+    {
+        int number_i;
+        scanf("%d", &number_i);
+
+        array_gcd = (i == 1 ? number_i : gcd(array_gcd, number_i));
+        largest_number = max(number_i, largest_number);
+    }
+
+    printf(desired_number%array_gcd == 0 && desired_number <= largest_number ? "POSSIBLE\n" : "IMPOSSIBLE\n");
+    return 0;
+}
