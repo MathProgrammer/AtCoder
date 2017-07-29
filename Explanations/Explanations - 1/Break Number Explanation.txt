@@ -1,0 +1,18 @@
+
+---------------------------------------
+
+Find the greatest n such that 2^n <= number. This can be done in O(log n) time.
+
+int main()
+{
+	int number;
+	scanf("%d", &number);
+
+	int power = 0;
+	while( (1 << power) <= number)
+		power++;
+
+	power--;
+	printf("%d\n", (1 << power));
+	return 0;
+}
