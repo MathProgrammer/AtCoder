@@ -1,0 +1,44 @@
+He has a stock of 2N skewers, all of which will be used in Skewer Meal. The length of the i-th skewer is Li. Also, he has an infinite supply of ingredients.
+
+To make a serving of Skewer Meal, he picks 2 skewers and threads ingredients onto those skewers. 
+Let the length of the shorter skewer be x, then the serving can hold the maximum of x ingredients.
+
+What is the maximum total number of ingredients that his N servings of Skewer Meal can hold, if he uses the skewers optimally
+
+---------------------------------------
+
+To maximise the total, you want to ensure you take the maximum possible x at each point. 
+Let the lengths be sorted. 
+
+Can you choose L(n) ? no.
+Can you choose L(n-1) ? Yes, by pairing it with L(n) and that is exactly what we do.
+
+Now the problem reduces to the same problem of size n-2, ... We always pair the last two elements together in the sorted list.
+
+------------------------------------
+
+#include <cstdio>
+#include <vector>
+#include <algorithm>
+
+#define all(v) (v).begin(), (v).end()
+using namespace std;
+
+int main()
+{
+    int no_of_skewers;
+    scanf("%d", &no_of_skewers);
+
+    vector <int> length(2*no_of_skewers);
+    for(int i = 0; i < 2*no_of_skewers; i++)
+        scanf("%d", &length[i]);
+
+    sort(all(length));
+
+    int sum = 0;
+    for(int i = 2*no_of_skewers - 2; i >= 0; i-= 2)
+        sum += length[i];
+
+    printf("%d\n", sum);
+    return 0;
+}
