@@ -1,0 +1,41 @@
+You are playing the following game with Joisino.
+
+Initially, you have a blank sheet of paper.
+Joisino announces a number. If that number is written on the sheet, erase the number from the sheet; if not, write the number on the sheet. 
+This process is repeated N times.
+Then, you are asked a question: How many numbers are written on the sheet now?
+The numbers announced by Joisino are given as A1,…,AN in the order she announces them. How many numbers will be written on the sheet at the end of the game?
+
+----------------------------------------------------
+
+Store it in a set. If an element occurs twice, delete it. 
+
+O(n log n)
+
+-----------------------------------
+
+#include <cstdio>
+#include <set>
+
+using namespace std;
+
+int main()
+{
+    int no_of_numbers;
+    scanf("%d", &no_of_numbers);
+
+    set <int> number;
+    for(int i = 1; i <= no_of_numbers; i++)
+    {
+        int number_i;
+        scanf("%d", &number_i);
+
+        if(number.count(number_i) == 1)
+            number.erase(number_i);
+        else
+            number.insert(number_i);
+    }
+
+    printf("%u\n", number.size());
+    return 0;
+}
