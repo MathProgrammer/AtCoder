@@ -1,0 +1,50 @@
+#include <cstdio>
+#include <vector>
+
+using namespace std;
+
+void precompute(vector <int> &answer_till, int LIMIT)
+{
+    vector <int> is_prime(LIMIT, true);
+    is_prime[0] = is_prime[1] = false;
+
+    vector <int> primes;
+    for(int i = 2; i < LIMIT; i++)
+    {
+        if(is_prime[i])
+            primes.push_back(i);
+
+        for(int j = 0; j < primes.size() && i*primes[j] < LIMIT; j++)
+        {
+            is_prime[i*primes[j]] = false;
+
+            if(i%primes[j] == 0) break;
+        }
+    }
+
+    for(int i = 3; i < LIMIT; i++)
+    {
+        answer_till[i] = answer_till[i - 1] + (i%2 == 1 && is_prime[i] && is_prime[(i + 1)/2]);
+    }
+
+
+}
+
+int main()
+{
+    const int LIMIT = 1e5 + 1;
+	vector <int> answer_till(LIMIT, 0);
+	precompute(answer_till, LIMIT);
+
+	int no_of_queries;
+	scanf("%d", &no_of_queries);
+
+	while(no_of_queries--)
+    {
+        int left, right;
+        scanf("%d %d", &left, &right);
+        printf("%d\n", answer_till[right] - answer_till[left - 1]);
+    }
+
+	return 0;
+}
