@@ -1,0 +1,24 @@
+
+Every A_i has to be a multiple of the previous term. We want to have the maximum number of terms, so increase each A_i by the smallest amount possible. 
+
+That means multiply by 2.
+
+---------------------------------------------
+
+int main()
+{
+    long long start, end;
+    cin >> start >> end;
+
+    int no_of_terms = 1;
+    long long a = start;
+
+    while(2*a <= end)
+    {
+        a = a << 1;
+        no_of_terms++;
+    }
+
+    cout << no_of_terms;
+    return 0;
+}
