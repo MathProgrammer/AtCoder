@@ -1,6 +1,6 @@
-If the month is m, then the answer is at least (m - 1)
+If the month is m, then the answer is at least (m - 1) as all the previous months have had the special day.
 
-All that's left to do is check if day >= m
+All that's left to do is check if the current month has the special day -  day >= m
 
 #include <iostream>
 
