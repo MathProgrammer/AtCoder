@@ -1,4 +1,6 @@
 
+https://mathprogrammer.quora.com/AtCoder-ABC096_D-Five-Five-Everywhere?__filter__&__nsrc__=2&__snid3__=2429207531
+
 The solution is to choose primes of the form 5k + 1. The sum of any 5 terms of the series is a multiple of 5 ! The solution is somewhat brilliant and I didn't come up with it during the contest. Always beautiful to do constructive number theory problems. 
 
 I checked if there are 55 primes less than 55555 upto that limit.
