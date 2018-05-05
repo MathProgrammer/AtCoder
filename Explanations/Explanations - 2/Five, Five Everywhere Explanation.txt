@@ -1,0 +1,40 @@
+
+The solution is to choose primes of the form 5k + 1. The sum of any 5 terms of the series is a multiple of 5 ! The solution is somewhat brilliant and I didn't come up with it during the contest. Always beautiful to do constructive number theory problems. 
+
+I checked if there are 55 primes less than 55555 upto that limit.
+
+#include <cstdio>
+#include <vector>
+
+using namespace std;
+
+int is_prime(int n)
+{
+    for(int i = 2; i*i <= n; i++)
+        if(n%i == 0)
+            return false;
+
+    return true;
+}
+
+int main()
+{
+    int length;
+    scanf("%d", &length);
+
+    const int MAX = 55555;
+
+    for(int i = 1, sequence_count = 0; 5*i + 1 <= MAX && sequence_count < length; i++)
+    {
+        int term = 5*i + 1;
+
+        if(is_prime(term))
+        {
+            printf("%d\n", term);
+            sequence_count++;
+        }
+    }
+
+    return 0;
+}
+
