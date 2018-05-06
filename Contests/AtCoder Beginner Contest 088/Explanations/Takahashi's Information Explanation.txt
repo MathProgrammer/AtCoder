@@ -1,0 +1,132 @@
+
+This problem is very interesting. Let's look at how we can brute force this. 
+
+We can fix all possible values of (A[1], A[2], A[3]) ... And determine B[1], B[2], B[3].
+
+This is O(|max|^3)
+
+We can go through all values of A[1], and then determine other five values and check if matrix is consistent. This is O(|max|).
+
+There is a brilliant O(1) solution. 
+
+Notice the following invariant - 
+
+if(A[1], A[2], A[3], B[1], B[2], B[3]) is a solution, then even (A[1] - x, A[2] - x, A[3] - x, B[1] + x, B[2] + x, B[3] + x) is a solution. 
+
+A[i] + B[j] = (A[i] - x) + (B[j] + x)
+
+So, if a solution exists, then even a solution with x = A[1] exists. 
+
+This means we can set A[1] = 0, and then find the other five values and check if the matrix is consistent.
+
+Note there is nothing special about the value A[1] = 0, We may arbitrarily set A[1] to i, by putting x = A[i] - i. 
+If there's no solution for A[1] = i, there's no solution for any A[1] by the invariant observed above.
+
+----------------------------------------------------------------------------------------------------------------
+
+#include <cstdio>
+
+int main()
+{
+    int matrix[4][4];
+
+    for(int i = 1; i <= 3; i++)
+        for(int j = 1; j <= 3; j++)
+            scanf("%d", &matrix[i][j]);
+
+    int A[4];
+    int B[4];
+
+    A[1] = 0;
+    B[1] = matrix[1][1] - A[1];
+    B[2] = matrix[1][2] - A[1];
+    B[3] = matrix[1][3] - A[1];
+    A[2] = matrix[2][1] - B[1];
+    A[3] = matrix[3][1] - B[1];
+
+    int is_possible = true;
+    for(int i = 1; i <= 3; i++)
+        for(int j = 1; j <= 3; j++)
+            if(A[i] + B[j] != matrix[i][j])
+                is_possible = false;
+
+    printf(is_possible ? "Yes\n" : "No\n");
+    return 0;
+}
+
+-------------------------------------------------------------------------
+
+Note - I came up with a wrong solution that got AC. 
+
+1. Notice the sum of corner elements is equal - (A[1] + B[1] + A[3] + B[3]) = (A[1] + B[3] + A[3] + B[1])
+
+2. Notice that if you sum all the rows - (3A[1] + B[1] + B[2] + B[3]) , second row = (3A[2] + B[1] + B[2] + B[3])
+
+Difference = 3(A[1] - A[2])
+
+So, find the sum of all rows, sum of all columns. The difference in between any 2 is a multiple of 3. 
+
+Now, every legal matrix satisfies this property, but there's no guarantee that every illegal matrix doesn't satisfy this property. 
+
+I submitted and got AC. I got a counter-example after the contest.
+
+------------------------------------------------------------------------------
+
+int main()
+{
+    int is_possible = true;
+ 
+    typedef vector <int> v_int;
+    vector <v_int> matrix (4, v_int(4, 0));
+ 
+    for(int i = 1; i <= 3; i++)
+        for(int j = 1; j <= 3; j++)
+            scanf("%d", &matrix[i][j]);
+ 
+    vector <int> row_sum(4, 0);
+    for(int i = 1; i <= 3; i++)
+        for(int j = 1; j <= 3; j++)
+            row_sum[i] += matrix[i][j];
+ 
+    sort(all(row_sum));
+    vector <int> A(4);
+ 
+    vector <int> column_sum(4, 0);
+    for(int i = 1; i <= 3; i++)
+        for(int j = 1; j <= 3; j++)
+            column_sum[j] += matrix[i][j];
+ 
+    sort(all(column_sum));
+    vector <int> B(4);
+ 
+    if( !((row_sum[1] - row_sum[2])%3 == 0 && (row_sum[2] - row_sum[3])%3 == 0 && (row_sum[1] - row_sum[3])%3 == 0) )
+    {
+        is_possible = false; //printf("R");
+    }
+ 
+    if( !((column_sum[1] - column_sum[2])%3 == 0 && (column_sum[2] - column_sum[3])%3 == 0 && (column_sum[1] - column_sum[3])%3 == 0) )
+    {
+        is_possible = false; //printf("C");
+    }
+ 
+    if( matrix[1][1]  + matrix[3][3] != matrix[3][1] + matrix[1][3])
+    {
+        is_possible = false;
+    }
+ 
+ 
+ 
+ 
+    printf(is_possible ? "Yes\n" : "No\n");
+    return 0;
+}
+
+-----------------------------------------------------
+It breaks at the following case - 
+
+0 0 0 
+0 0 3
+0 0 0
+
+My program thinks it's possible, but it isn't.
+
