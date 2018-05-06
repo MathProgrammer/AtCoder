@@ -1,4 +1,6 @@
 
+https://mathprogrammer.quora.com/AtCoder-Takahashis-Information
+
 This problem is very interesting. Let's look at how we can brute force this. 
 
 We can fix all possible values of (A[1], A[2], A[3]) ... And determine B[1], B[2], B[3].
