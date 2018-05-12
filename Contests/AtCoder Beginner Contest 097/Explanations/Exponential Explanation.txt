@@ -1,0 +1,39 @@
+Mark all it's powers from n^2 till n^p > 1000. 
+We do this for at most 9 powers. 
+
+Moreover, 100^2 = 1000, 
+
+After that any integer's square is greater than 1000. 
+
+So, we only need to go from n = 2 to n = 1000. 
+
+After reading X, check if P[X] is true. 
+
+--------------------------------------------------
+
+int main()
+{
+    const int LIMIT = 1015;
+    vector <int> perfect_power(LIMIT, false);
+
+    perfect_power[1] = true;
+    for(int n = 2; n*n < LIMIT; n++)
+    {
+        int current_power = n*n;
+
+        while(current_power < LIMIT)
+        {
+            perfect_power[current_power] = true;
+            current_power *= n;
+        }
+    }
+
+    int X;
+    cin >> X;
+
+    while(!perfect_power[X])
+        X--;
+
+    cout << X;
+    return 0;
+}
