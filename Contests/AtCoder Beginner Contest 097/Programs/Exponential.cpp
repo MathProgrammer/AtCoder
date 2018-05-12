@@ -5,7 +5,7 @@ using namespace std;
  
 int main()
 {
-    const int LIMIT = 1015;
+    const int LIMIT = 2015;
     vector <int> perfect_power(LIMIT, false);
  
     perfect_power[1] = true;
