@@ -1,0 +1,49 @@
+Notice that K is very small in this problem !
+
+1 <= K <= 5
+
+The K-th smallest lexicographic string cannot be a string of length > 5. 
+
+This is because if we have a string
+S[1, 2, 3, 4, 5, 6]
+
+Then S[1], S[1, 2], S[1, 2, 3], S[1, 2, 3, 4] and S[1, 2, 3, 4, 5]
+
+are all smaller than S[1, 2, 3, 4, 5, 6].
+
+Also notice that length of S is not greater than 1000. 
+
+So, I simply stored all substrings of length 1, 2, 3, 4 and 5 in a set. (There are at most 5000 substrings. Though in practice as there are only 26 alphabets, this number will be a lot less.)
+
+The C++ STL set has the lovely property of not storing duplicates and also sorting the elements as it stores them ! It works as a priority queue - a balanced binary search tree. So after storing the substrings, all we need to do is point to the K-th substring in the set (0-indexed)
+   
+-------------------------------------------------
+
+int main()
+{
+    string S;
+    int k;
+    cin >> S >> k;
+
+    set <string> substrings;
+
+    for(int length = 1; length <= 5; length++)
+    {
+        for(int i = 0; i + length - 1 < S.size(); i++)
+        {
+            substrings.insert(S.substr(i, length));
+        }
+    }
+
+    int i = 1;
+    for(set <string> :: iterator it = substrings.begin(); it != substrings.end() && i <= k; it++, i++)
+    {
+        if(i == k)
+        {
+            cout << *it;
+        }
+    }
+
+    return 0;
+}
+
