@@ -16,7 +16,7 @@ Moreover, 32^2 > 1000,
 
 After that any integer's square is greater than 1000. 
 
-So, we only need to go from n = 2 to n = 1000. 
+So, we only need to go from n = 2 to n = 32. 
 
 After reading X, check if P[X] is true. 
 
