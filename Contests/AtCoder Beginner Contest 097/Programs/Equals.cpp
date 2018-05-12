@@ -51,7 +51,7 @@ int main()
 
     int no_of_inplace_elements = 0;
     for(int i = 1; i <= n; i++)
-        no_of_inplace_elements += (i == permutation[i] || component[i] == component[permutation[i]]);
+        no_of_inplace_elements += (component[i] == component[permutation[i]]);
 
     printf("%d\n", no_of_inplace_elements);
     return 0;
