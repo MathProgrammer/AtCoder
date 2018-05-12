@@ -12,7 +12,7 @@ Pick each integer from n = 2 onwards.
 Mark all it's powers from n^2 till n^p > 1000. 
 We do this for at most 9 powers. 
 
-Moreover, 100^2 = 1000, 
+Moreover, 32^2 > 1000, 
 
 After that any integer's square is greater than 1000. 
 
