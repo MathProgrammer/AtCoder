@@ -1,0 +1,50 @@
+Notice that 2^10 > 1000
+
+This means that if an integer is a perfect power, it is at most a 9-th power. (Since we are only concerned with integers upto 1000.)
+
+Maintain an array P.
+
+P[i] = true, if i is a perfect power
+P[i] = false, otherwise. 
+
+Pick each integer from n = 2 onwards. 
+
+Mark all it's powers from n^2 till n^p > 1000. 
+We do this for at most 9 powers. 
+
+Moreover, 32^2 > 1000, 
+
+After that any integer's square is greater than 1000. 
+
+So, we only need to go from n = 2 to n = 32. 
+
+After reading X, check if P[X] is true. 
+
+--------------------------------------------------
+
+int main()
+{
+    const int LIMIT = 1015;
+    vector <int> perfect_power(LIMIT, false);
+
+    perfect_power[1] = true;
+    for(int n = 2; n*n < LIMIT; n++)
+    {
+        int current_power = n*n;
+
+        while(current_power < LIMIT)
+        {
+            perfect_power[current_power] = true;
+            current_power *= n;
+        }
+    }
+
+    int X;
+    cin >> X;
+
+    while(!perfect_power[X])
+        X--;
+
+    cout << X;
+    return 0;
+}

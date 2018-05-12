@@ -1,0 +1,15 @@
+Check if A-B and B-C is possible
+Or if A-C is possible. 
+
+Ensure you're using abs(x) as it's not necessary that A < B < C.
+
+------------------------------------------------------------
+
+int main()
+{
+    int A, B, C, D;
+    cin >> A >> B >> C >> D;
+
+    cout << ( (abs(B - A) <= D && abs(C - B) <= D) || abs(C - A) <= D ? "Yes\n" : "No\n");
+    return 0;
+}
