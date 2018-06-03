@@ -1,0 +1,46 @@
+
+4/n = 1/i + 1/j + 1/k
+
+4/n = (i + j)/ij + 1/k
+
+1/k = 4/n - (i + j)/ij
+
+1/k = (4ij - (i + j)n)/nij
+
+k = nij/(4ij - (i + j)n)
+
+Let us iterate over i and j and try to determine if a k is possible. (It's a common trick in questions such as these to iterate over 2 variables as the third is forced the iterate over all 3 as it will take too much time.)
+
+Be careful to avoid negative numbers and division by 0.
+
+--------------------------------
+
+int main()
+{
+    int n;
+    scanf("%d", &n);
+
+    const int MAX = 3500;
+
+    for(int i = 1; i <= MAX; i++)
+    {
+        for(int j = i + 1; j <= MAX; j++)
+        {
+            long long numerator = n*1LL*i*j;
+            long long denominator = 4LL*i*j - (i + j)*1LL*n;
+
+            if(denominator > 0 && numerator%denominator == 0)
+            {
+                long long k = numerator/denominator;
+
+                printf("%d %d %lld\n", i, j, k);
+
+                return 0;
+            }
+        }
+    }
+    return 0;
+}
+
+
+
