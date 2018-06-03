@@ -1,0 +1,39 @@
+It is given that the data is already consistent. We need not check that. 
+
+Let us take the score of the last person. Let is be S, let his rank be R. 
+
+It means there are at least R players. 
+
+Now, it is possible for people to score S - 1, S - 2, S - 3, ... 2, 1, 0
+
+So, if he scores S, then there can be S more players. 
+
+Answer = R + S, where R is the rank of the last player and S is his score. 
+
+------------------------------
+
+#include <cstdio>
+
+int main()
+{
+    int no_of_scores;
+    scanf("%d", &no_of_scores);
+
+    int last_position = 0, lowest_score;
+
+    for(int i = 1; i <= no_of_scores; i++)
+    {
+        int position, score;
+        scanf("%d %d", &position, &score);
+
+        if(position > last_position)
+        {
+            last_position = position, lowest_score = score;
+        }
+    }
+
+    int maximum_players = last_position + lowest_score;
+    printf("%d\n", maximum_players);
+
+    return 0;
+}
