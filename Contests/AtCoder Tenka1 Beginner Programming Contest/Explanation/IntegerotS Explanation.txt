@@ -1,0 +1,93 @@
+Blog Link - http://qr.ae/TUT0MC
+
+Basically, if you have a mask M, you can only choose objects which are submasks of M. This ensures their bitwise OR is also a submask of M.
+
+Rather than checking all masks from 1 to K, we can do something smarter. 
+
+If an integer < K + 1, then it means it has some common prefix with K + 1, 
+It has a 0 where K + 1 has a 1
+
+And it doesn't matter what bits come after that position where it has a 0 and K + 1 has a 1. 
+
+So, if K + 1 = 1001001101
+
+Then for example, let us say some integers match it upto sixth place
+1001000???
+
+It can end with 001, 010, 101, etc ... It can have any legal combination. So we can say it will be a submask of 111. 
+
+The entire integer will be a submask of 1001000111
+
+Similarly, all integers smaller than K + 1 will be submasks of either
+
+0111111111
+1000111111
+1001000111
+1001001011
+1001001100
+
+All of them have a common prefix with K + 1, then have a 0 where K + 1 has a 1 and from there onwards it can at most have all 1s.
+There is no integer smaller than K + 1, which is not a submask of one of these masks. If an integer is not a submask of any of these masks, then it means it is greater than K + 1. Going over these masks is sufficient to cover all integers smaller than K + 1.
+
+
+There are at most log K such masks because the number of such masks is many as the number of 1s in K
+
+Complexity = O(N log K)
+
+-------------------------------
+
+#include <cstdio>
+#include <vector>
+
+using namespace std;
+
+int all_ones(int n) //Return a number consisting of n 1s in binary
+{
+    return (1LL << n) - 1;
+}
+
+int is_bit_set(int n, int position)
+{
+    return ( (n&(1LL << position)) != 0);
+}
+
+int main()
+{
+    int no_of_elements, k;
+    scanf("%d %d", &no_of_elements, &k);
+
+    vector <int> cost(no_of_elements + 1);
+    vector <int> utility(no_of_elements + 1);
+    for(int i = 1; i <= no_of_elements; i++)
+        scanf("%d %d", &cost[i], &utility[i]);
+
+    int limit = k + 1;
+    const int MAX_BITS = 31;
+
+    long long mask = 0, best_utility = 0;
+
+    for(int bit = MAX_BITS; bit >= 0; bit--)
+    {
+        if(is_bit_set(limit, bit)) //bit is set
+        {
+            mask = (limit - (1LL << bit)); //Make that bit 0
+
+            mask |= all_ones(bit); //Set all bits after that position
+
+            long long current_utility = 0;
+
+            for(int i = 1; i <= no_of_elements; i++)
+            {
+                if( (mask&cost[i]) == cost[i] ) //Cost[i] is a submask of mask
+                {
+                    current_utility += utility[i];
+                }
+            }
+
+            best_utility = max(best_utility, current_utility);
+        }
+    }
+
+    printf("%lld\n", best_utility);
+    return 0;
+}
