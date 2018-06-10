@@ -1,0 +1,52 @@
+Okay, so in each good grid, all squares = 0 (mod 3) will be the same colour. 
+
+All = 1, 2 will have the same colours too
+
+The entire grid will be of three colours. 
+
+I missed a trick here. Keep track of the frequency of each colour by the type of square. There are 3 types of squares. 
+
+frequency(colour, type) holds the number of squares of type that have colour. 
+
+Then to change all squares of type x to one colour. 
+
+Fix a colour and then change all colours to that. 
+
+for(int c = 1; c <= C; c++)
+	total += d[c][c0]*frequency[c0][0]
+
+So, there's what we did. 
+
+Colours are small, (30) but squares are many. (2500)
+
+So for each of the 30 colours, keep track of how frequently it occurs in a certain type of square. To convert one to c0, we will use d[c][c0], so just multiply it by frequency.
+
+O(c^4)
+-----------------------------------------------
+
+for(int c0 = 1; c0 <= no_of_colours; c0++)
+    {
+        for(int c1 = 1; c1 <= no_of_colours; c1++)
+        {
+            for(int c2 = 1; c2 <= no_of_colours; c2++)
+            {
+                if(all_different(c0, c1, c2))
+                {
+                    int cost_here = 0;
+
+                    for(int c = 1; c <= no_of_colours; c++)
+                        cost_here += cost[c][c0]*frequency[c][0];
+
+                    for(int c = 1; c <= no_of_colours; c++)
+                        cost_here += cost[c][c1]*frequency[c][1];
+
+                    for(int c = 1; c <= no_of_colours; c++)
+                        cost_here += cost[c][c2]*frequency[c][2];
+
+                    minimum_cost = min(minimum_cost, cost_here);
+                }
+            }
+        }
+    }
+
+    printf(minimum_cost >= oo ? "-1\n" : "%d\n", minimum_cost);
