@@ -1,0 +1,43 @@
+Let the final value be x
+
+Answer = Sum( A[i] - x )^2
+
+We want to minimise with respect to x. It's a parabola so we set derivative to 0 to see what value of x minimises it. 
+
+Sum(A[i]^2 + x^2 - 2A[i]x)
+
+Derivative = 2nx -2Sum(A[i]) = 0
+
+x = Sum(A[i])/n
+
+It's the mean ! Rounded to the nearest integer !
+
+-------------------------------------------
+
+int main()
+{
+    int no_of_elements;
+    scanf("%d", &no_of_elements);
+    vector <int> A(no_of_elements + 1);
+
+    double sum = 0;
+    for(int i = 1; i <= no_of_elements; i++)
+    {
+        scanf("%d", &A[i]);
+
+        sum += A[i];
+    }
+
+    float mean = sum/no_of_elements;
+    int int_mean = mean;
+
+    if(mean - int_mean >= 0.5)
+        int_mean++;
+
+    int cost = 0;
+    for(int i = 1; i <= no_of_elements; i++)
+        cost += (A[i] - int_mean)*(A[i] - int_mean);
+
+    printf("%d\n", cost);
+    return 0;
+}
