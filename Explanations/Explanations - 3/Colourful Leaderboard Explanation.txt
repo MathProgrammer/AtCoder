@@ -1,0 +1,39 @@
+An elegant way of classifying the colours is noticing that if each colour is of the form 400q + r, 
+
+Numbers which have the same q fall under the same colour. 
+
+Now, keep track of the normal colours. Assign all the special colours to the same colour to minimise the number of colours. Assign all the special colours a different colour to maximise. 
+
+Trick is when normal = 0, then min = 1. Otherwise = normal.
+
+----------------------------------------
+
+int main()
+{
+    int no_of_contestants;
+    scanf("%d", &no_of_contestants);
+
+    const int NO_OF_COLOURS = 8, SPECIAL = 8;
+    int frequency[NO_OF_COLOURS + 1] = {0}, special_colours = 0;
+
+    while(no_of_contestants--)
+    {
+        int rating;
+        scanf("%d", &rating);
+
+        if(rating < 3200)
+            frequency[rating/400]++;
+        else
+            special_colours++;
+    }
+
+    int normal_colours = 0;
+    for(int i = 0; i < SPECIAL; i++)
+        normal_colours += (frequency[i] > 0);
+
+    int min_colours = (normal_colours == 0 ? 1 : normal_colours);
+    int max_colours = normal_colours + special_colours;
+
+    printf("%d %d", min_colours, max_colours);
+    return 0;
+}
