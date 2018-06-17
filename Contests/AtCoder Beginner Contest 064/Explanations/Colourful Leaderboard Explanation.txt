@@ -1,6 +1,7 @@
 An elegant way of classifying the colours is noticing that if each colour is of the form 400q + r, 
 
 Numbers which have the same q fall under the same colour. 
+So, rather than have a massive if else ladder, just divide by 400 ! A very important trick this problem taught me !
 
 Now, keep track of the normal colours. Assign all the special colours to the same colour to minimise the number of colours. Assign all the special colours a different colour to maximise. 
 
