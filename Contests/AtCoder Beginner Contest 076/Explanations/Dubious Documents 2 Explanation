@@ -1,0 +1,49 @@
+The lengths of S and T are small. 
+
+Go through all positions of S, try to match T at location i. 
+
+Of all locations, choose the rightmost. 
+
+Pad the rest of the question marks with 'a'. 
+
+The string has to be lexicographically smallest. So, T must be placed as late as possible and every other question mark has an 'a'.
+Suppose T can be placed locations i1 i2 i3 ... i3 being the rightmost. It is always best to place T at position i3 so that the prefix can be as small as possible by being padded with question marks.
+
+------------------------------------------------
+
+int main()
+{
+    string S, T;
+    cin >> S >> T;
+
+    const int NOT_FOUND = -1
+    int match_location = NOT_FOUND;
+
+    for(int i = 0; i + T.size() - 1 < S.size(); i++)
+    {
+        int match_made = true;
+        for(int j = 0; j < T.size(); j++)
+        {
+            if(S[i + j] != T[j] && S[i + j] != '?')
+            {
+                match_made = false;
+            }
+        }
+
+        if(match_made)
+            match_location = i;
+    }
+
+    for(int i = 0; i < S.size(); i++)
+        if(S[i] == '?')
+            S[i] = 'a';
+
+    for(int i = 0; i < T.size(); i++)
+        S[match_location + i] = T[i];
+
+    if(match_location == NOT_FOUND)
+        cout << "UNRESTORABLE\n";
+    else
+        cout << S;
+    return 0;
+}
