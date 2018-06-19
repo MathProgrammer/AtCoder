@@ -1,0 +1,39 @@
+It is always optimal to have some points on the borders of the rectangle. 
+
+If we have an edge which does not pass through any points, then we can draw a new edge parallel to this edge passing through some points such that the same number of points are inside the rectangle, with a smaller area.
+
+So, iterate over every possible x ends ... also over every y ends. This is O(n^4). 
+
+And check how many points are inside. This is O(n)
+
+Overall complexity is O(n^5). This is very high, but this was the intended solution. 
+
+Remember to sort the x and y points. 
+
+---------------------------------------
+
+long long minimum_area = (x[no_of_points - 1] - x[0])*1LL*(y[no_of_points - 1] - y[0]);
+
+    for(int x_i = 0; x_i < no_of_points; x_i++)
+    {
+        for(int x_j = x_i + 1; x_j < no_of_points; x_j++)
+        {
+            for(int y_i = 0; y_i < no_of_points; y_i++)
+            {
+                for(int y_j = y_i + 1; y_j < no_of_points; y_j++)
+                {
+                    int x_beginning = x[x_i], x_end = x[x_j], y_beginning = y[y_i], y_end = y[y_j];
+
+                    int inside_points = 0;
+
+                    for(int i = 0; i < no_of_points; i++)
+                    {
+                        inside_points += (x_beginning <= P[i].x && P[i].x <= x_end && y_beginning <= P[i].y && P[i].y <= y_end);
+                    }
+
+                    if(inside_points >= minimum_points)
+                        minimum_area = min(minimum_area, (x_end - x_beginning)*1LL*(y_end - y_beginning));
+                }
+            }
+        }
+    }
