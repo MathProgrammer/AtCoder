@@ -1,0 +1,26 @@
+Let A < B < C
+
+Now if we delete A first, it is always better to go to B first and then C rather than to C and then B. 
+
+So distance = C - A
+
+Similar reasoning holds if we delete C first. 
+
+Now, if we delete B first, then cost = B - A + C - A or C - B + C - A
+
+So, it is never optimal to delete B first. 
+
+The best answer is always C - A
+
+---------------------------------------------
+
+int main()
+{
+    int A, B, C;
+    cin >> A >> B >> C;
+
+    int cost = max_3(A, B, C) - min_3(A, B, C);
+    cout << cost;
+
+    return 0;
+}
