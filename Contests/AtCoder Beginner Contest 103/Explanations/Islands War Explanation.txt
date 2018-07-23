@@ -1,20 +1,26 @@
+I shall provide some intuition. 
+
 Rather than think of it as a graph, it is much better to think of a straight line with N integer points. 
 
 We are given M segments and must delete the least number of lines so that all the end points of the M segments are disconnected. 
 
-Now, let us consider the end point with the smallest endpoint. Let it be S1 - a1 b1
+Now, let us consider the end point with the smallest endpoint. Let it be S1 - [a1 b1]
 
-Now, some line in between a1 and b1 has to be deleted so that it's disconnected. 
+Now, at least one line in between a1 and b1 has to be deleted so that S1 is disconnected. 
 
-However, which line is optimal to delete ? 
+However, which line to delete ? 
+
+We'd like to delete a line that lies in as many other segments as possible so that one deletion can disconnect as many segments as possible. 
 
 Let us delete the last line of the segment a1 b1. 
 
-This ensures the segment a1 b1 is deleted, and also ensures that we can use the same deleted line for next segments.
+We can see that this is optimal. Let us suppose that there is some other line which on deletion disconnects k segments. Since the segments are sorted by their end points - b, it ensures all the segments that are disconnected after deleting this line have their b >= b1. 
+And if the start point a < line, then a < last_line. 
 
-(If there is any line in the segment [a1, b1] which also occurs in other segments, then it must be the last line of the segment.)
+So, we can always do at least as well by deleting the last line of a segment. 
 
-This greedy solution can be seen to be optimal.
+
+Thus, the greedy solution can be seen to be optimal.
 
 So, we sort the segments based on the end points and delete the last edge of a segment only if the segment has no lines already deleted. 
 For this, we keep track of the last line to be deleted. 
