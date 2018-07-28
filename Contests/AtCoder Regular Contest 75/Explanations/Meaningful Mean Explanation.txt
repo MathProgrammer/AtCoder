@@ -1,0 +1,52 @@
+Blog Link - http://qr.ae/TUIwZk
+
+---------------------------------
+
+struct info
+{
+    LL value;
+    int index;
+
+    info(LL V, int I)
+    {
+        value = V, index = I;
+    }
+
+    int operator<(const info &A)
+    {
+        return (value == A.value ? index < A.index : value < A.value);
+    }
+};
+
+int main()
+{
+    int no_of_elements, k;
+    scanf("%d %d", &no_of_elements, &k);
+
+    LL array_sum = 0;
+    vector <info> A(no_of_elements + 1, info(0, 0));
+    for(int i = 1; i <= no_of_elements; i++)
+    {
+        int element;
+        scanf("%d", &element);
+
+        array_sum += element;
+        A[i] = info(array_sum - i*1LL*k, i);
+    }
+
+    sort(all(A));
+
+    memset(sum, 0, sizeof(sum));
+
+    LL answer_pairs = 0;
+
+    for(int i = 0; i <= no_of_elements; i++)
+    {
+        answer_pairs += get_sum(0, 0, no_of_elements, 0, A[i].index);
+
+        update(0, 0, no_of_elements, A[i].index, 1);
+    }
+
+    printf("%lld\n", answer_pairs);
+    return 0;
+}
