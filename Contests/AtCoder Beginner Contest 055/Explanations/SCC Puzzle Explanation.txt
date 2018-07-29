@@ -1,0 +1,27 @@
+First make as many conventional pieces as possible. 
+
+We can make min(S, C/2) such pieces. 
+
+Then reduce the S and Cs accordingly. 
+
+Then we can make a new piece for ever 4 Cs. 
+
+This greedy algorithm is optimal. 
+
+---------------------------------------------
+
+int main()
+{
+	long long S, C;
+	cin >> S >> C;
+
+	long long no_of_pieces = min(S, C/2);
+
+	S -= no_of_pieces;
+	C -= 2*no_of_pieces;
+
+	no_of_pieces += C/4;
+
+	cout << no_of_pieces;
+	return 0;
+}
