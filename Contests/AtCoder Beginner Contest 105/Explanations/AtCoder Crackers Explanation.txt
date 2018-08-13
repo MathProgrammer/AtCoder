@@ -1,0 +1,22 @@
+We give N/k crackers to everyone. 
+
+Now there are N mod K crackers left. 
+
+We give 1 cracker to 1 person till they are all over. 
+
+So, the maximum will be (N/k + N mod k) and the minimum will be N/k.
+
+------------------------------------------
+
+#include <cstdio>
+
+int main()
+{
+    int n, k;
+    scanf("%d %d", &n, &k);
+
+    int answer = (n%k == 0 ? 0 : 1);
+    printf("%d\n", answer);
+
+    return 0;
+}
