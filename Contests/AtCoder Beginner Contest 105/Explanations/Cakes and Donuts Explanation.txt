@@ -1,0 +1,43 @@
+There is an O(n) solution but there's a more elegant solution. 
+
+Notice that if x is possible, then even x + 4 is possible. 
+
+Now, 
+18 = 4 + 7 + 7
+19 = 4 + 4 + 4 + 7
+20 = 4 + 4 + 4 + 4 + 4
+21 = 7 + 7 + 7
+
+Since we have four consecutive integers that are all equal, it means that all integers >= 18 is possible.
+
+------------------------------------------
+
+#include <cstdio>
+
+int main()
+{
+    int n;
+    scanf("%d", &n);
+
+    int possible = false;
+
+    if(n >= 18)
+    {
+        possible = true;
+    }
+    else
+    {
+        for(int i = 0; 4*i <= n; i++)
+        {
+            if( (n - 4*i)%7 == 0)
+            {
+                possible = true;
+                break;
+            }
+        }
+    }
+
+    printf(possible ? "Yes\n" : "No\n");
+
+    return 0;
+} 
