@@ -1,0 +1,63 @@
+First of all, n = 0 is a special case. 
+
+Secondly, 
+
+Suppose we have a string in base -2 
+
+N = b1 b2 ... bk
+
+If we add a 0 at the end and make it (b1 b2 ... bk 0), this is -2N. 
+(Because everything gets multiplied by 2 and all the signs get toggled. So it is like multiplying N with -2.)
+
+If we add a 1 at the end we make it (b1 b2 ... bk 1)
+(Now we add a 1, and then shift so we multiply by -2.)
+
+
+So when we are doing the inverse process, we have N. 
+We will determine the last digit - the least significant. If it is a multiple of -2, then we will append a 0. And then divide N by -2.
+
+Else we will append a 1. Subtract 1. And then divide N by -2.
+
+We stop when N = 0.
+
+Now how are we sure we will always get N = 0 ? 
+
+Because we can only divide N by -2 a finite number of times before hitting 0.
+
+--------------------------------------
+
+int main()
+{
+    int n;
+    scanf("%d", &n);
+
+    if(n == 0)
+    {
+        printf("0\n");
+        return 0;
+    }
+
+    vector <int> A;
+    while(n != 0)
+    {
+        if(abs(n)%2 == 0)
+        {
+            A.push_back(0);
+            n /= (-2);
+        }
+        else
+        {
+            A.push_back(1);
+            n--;
+            n /= (-2);
+        }
+    }
+
+    reverse(all(A));
+
+    for(int i = 0; i < A.size(); i++)
+        printf("%d", A[i]);
+
+    return 0;
+}
+
