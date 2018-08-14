@@ -10,7 +10,8 @@ If we add a 0 at the end and make it (b1 b2 ... bk 0), this is -2N.
 (Because everything gets multiplied by 2 and all the signs get toggled. So it is like multiplying N with -2.)
 
 If we add a 1 at the end we make it (b1 b2 ... bk 1)
-(Now we add a 1, and then shift so we multiply by -2.)
+(Adding a 1 is equivalent to first appending a 0 and then performing addition with 1.)
+So appending 1 is like Making N -> -2N + 1
 
 
 So when we are doing the inverse process, we have N. 
