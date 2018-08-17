@@ -1,0 +1,14 @@
+If A and B were > 10^9, then this problem could be solved by just checking the parity of A and B. But the constraints are small enough to just check the parity of the product.
+
+-----------------------------------
+
+#include <iostream>
+using namespace std;
+
+int main() 
+{
+	int A, B;
+	cin >> A >> B;
+	cout << ((A*B)%2 == 0 ? "Even" : "Odd");
+	return 0;
+}

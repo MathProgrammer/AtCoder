@@ -1,0 +1,62 @@
+Treat the numbers as strings. Concatenate them and get the integer value. 
+
+Now, if the number was > 10^6 or so, then we could use binary search to determine if it's a square. But it's not required here.
+
+-----------------------------------------
+
+Let us say you are at Point P at time T1 and you must go to Point Q at time T2
+
+Then, what is the minimum time you need ?
+
+|P.x - Q.x| + |P.y - Q.y|
+
+Since we can only take one step in either direction at a time, we cannot go from P to Q is the time is less than this. 
+
+Now what if the time given is more than this ? 
+
+Let us notice that in some order, 
+
+the co-ordinates change like this - 
+
+P.x, -> P.x + 1, -> P.x + 2, -> .... , -> Q.x, 
+P.y, -> P.y + 1, -> P.y + 2, -> ... , -> Q.y
+
+Now if we are given 'more' time, we need to make some extra moves
+
+Every time we make a move not on this path, we must also make a returning move. 
+
+So, the journey is only possible if the 'excess time' is even.
+
+--------------------------------------------
+
+int get_value(string S)
+{
+	int value = 0;
+
+	for(int i = 0; i < S.size(); i++)
+	{
+		value = value*10 + (S[i] - '0');
+	}
+
+	return value;
+}
+
+int main()
+{
+	string A, B;
+	cin >> A >> B;
+	string N = A + B;
+
+	int n = get_value(N);
+	int is_square = false;
+
+	for(int i = 1; i*i <= n; i++)
+	{
+		if(i*i == n)
+			is_square = true;
+	}
+
+	cout << (is_square ? "Yes" : "No");
+	return 0;
+}
+
