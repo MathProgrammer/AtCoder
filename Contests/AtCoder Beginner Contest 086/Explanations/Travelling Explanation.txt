@@ -1,0 +1,55 @@
+Let us say you are at Point P at time T1 and you must go to Point Q at time T2
+
+Then, what is the minimum time you need ?
+
+|P.x - Q.x| + |P.y - Q.y|
+
+Since we can only take one step in either direction at a time, we cannot go from P to Q is the time is less than this. 
+
+Now what if the time given is more than this ? 
+
+Let us notice that in some order, 
+
+the co-ordinates change like this - 
+
+P.x, -> P.x + 1, -> P.x + 2, -> .... , -> Q.x, 
+P.y, -> P.y + 1, -> P.y + 2, -> ... , -> Q.y
+
+Now if we are given 'more' time, we need to make some extra moves
+
+Every time we make a move not on this path, we must also make a returning move. 
+
+So, the journey is only possible if the 'excess time' is even.
+
+--------------------------------------------
+
+int main()
+{
+    int no_of_steps;
+    scanf("%d", &no_of_steps);
+
+    int is_possible = true;
+    int last_time = 0;
+    int last_x = 0, last_y = 0;
+
+    while(no_of_steps--)
+    {
+        int time, x, y;
+        scanf("%d %d %d", &time, &x, &y);
+
+        int distance = abs(x - last_x) + abs(y - last_y);
+        int interval = time - last_time;
+
+        int excess_time = interval - distance;
+
+        if(distance > interval || excess_time%2 == 1)
+            is_possible = false;
+
+        last_time = time;
+        last_x = x, last_y = y;
+    }
+
+    printf(is_possible ? "Yes\n" : "No\n");
+    return 0;
+}
+
