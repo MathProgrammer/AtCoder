@@ -1,0 +1,46 @@
+Blog Link - http://qr.ae/TUNhbf
+
+----------------------
+
+int main()
+{
+    int no_of_cities, no_of_trains, no_of_queries;
+    scanf("%d %d %d", &no_of_cities, &no_of_trains, &no_of_queries);
+
+    vector <train_info> train(no_of_trains + 1, train_info(0, 0));
+    for(int i = 1; i <= no_of_trains; i++)
+        scanf("%d %d", &train[i].left, &train[i].right);
+
+    sort(all(train));
+
+    vector <query_info> query(no_of_queries + 1, query_info(0, 0, 0));
+    for(int i = 1; i <= no_of_queries; i++)
+    {
+        scanf("%d %d", &query[i].left, &query[i].right);
+
+        query[i].query_no = i;
+    }
+
+    sort(all(query));
+
+    memset(sum_tree, 0, sizeof(sum_tree));
+    vector <int> answer(no_of_queries + 1);
+
+    int last_train = 1;
+    for(int i = 1; i <= no_of_queries; i++)
+    {
+        while(last_train <= no_of_trains && train[last_train].right <= query[i].right)
+        {
+            update(1, 1, no_of_cities, train[last_train].left, 1);
+
+            last_train++;
+        }
+
+        answer[query[i].query_no] = get_sum(1, 1, no_of_cities, query[i].left, query[i].right);
+    }
+
+    for(int i = 1; i <= no_of_queries; i++)
+        printf("%d\n", answer[i]);
+
+    return 0;
+}
