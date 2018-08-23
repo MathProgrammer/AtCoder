@@ -1,0 +1,30 @@
+If there is a 1, it will always be a 1
+
+If there is any other digit, 2^{10^15) > 10^{18}, 
+
+So the K-th digit will be that only.
+
+So the answer is the K-th one, or the first digit that is not 1, whichever comes first.
+
+------------------------------------------
+
+int main()
+{
+    string S;
+    int day;
+
+    cin >> S >> day;
+    char answer;
+
+    for(int i = 0; i < min(S.size(), day); i++)
+    {
+        if(i == day - 1 || S[i] != '1')
+        {
+            answer = S[i];
+            break;
+        }
+    }
+
+    cout << answer;
+    return 0;
+}
