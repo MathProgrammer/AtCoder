@@ -1,0 +1,30 @@
+Maintain a list of all words that have been used. 
+
+For each incoming word, check if it has already been used and if the first character is the same as the last character of the previous word.
+
+------------------------------
+
+int main()
+{
+    int no_of_words;
+    cin >> no_of_words;
+
+    int rules_followed = true;
+
+    map <string, int> used;
+    string previous_word;
+    for(int i = 1; i <= no_of_words; i++)
+    {
+        string current_word;
+        cin >> current_word;
+
+        if(used[current_word] || (i > 1 && current_word[0] != previous_word[previous_word.size() - 1]))
+           rules_followed = false;
+
+        used[current_word] = true;
+        previous_word = current_word;
+    }
+
+    cout << (rules_followed ? "Yes\n" : "No\n");
+    return 0;
+}
