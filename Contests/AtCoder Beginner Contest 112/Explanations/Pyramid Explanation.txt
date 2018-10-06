@@ -1,0 +1,45 @@
+Let us try out every pair (x, y) in the range as the center. 
+
+-------------
+
+Suppose (x, y) is the center. Then let us fix another point P who's height is not 0. 
+
+Calculate the height H of the pyramid using the center and P. 
+
+--------------------
+
+
+After that go through all n points, and check for ever i in [1, n] that
+
+h[i] = max(H - |X[i] - x| - |Y[i] - y|, 0)
+
+if h[i]'s value matches with the real value of h[i] for all i, then H is the real height. 
+
+---------------------------------
+
+for(int x = 0; x <= MAX_X; x++)
+    {
+        for(int y = 0; y <= MAX_Y; y++)
+        {
+            int found = true;
+
+            int candidate_height = height[non_zero] + abs(X[non_zero] - x) + abs(Y[non_zero] - y);
+
+            for(int i = 1; i <= no_of_points; i++)
+            {
+                int expected_height = max(candidate_height - abs(X[i] - x) - abs(Y[i] - y), 0);
+
+                if(expected_height != height[i])
+                {
+                    found = false;
+                }
+            }
+
+            if(found)
+            {
+                center_x = x, center_y = y;
+
+                pyramid_height = candidate_height;
+            }
+        }
+    }
