@@ -1,0 +1,38 @@
+We have N pairs (a, b)
+
+We can add X to any a's of our choice to maximise the sum of (a_i x b_i)
+
+notice that the b_i's are like weights. 
+
+We can increase the coefficients of any b_i. It is always optimal to increase the largest b_i coefficient. 
+
+(Otherwise, we can always get a larger sum by replacing the largest b_i instead of whatever we have chosen.)
+
+--------------
+
+#include <cstdio>
+#include <algorithm>
+
+using namespace std;
+
+int main()
+{
+    int no_of_pairs, increase;
+    scanf("%d %d", &no_of_pairs, &increase);
+
+    int product_sum = 0;
+    int maximum_b = 0;
+    while(no_of_pairs--)
+    {
+        int a, b;
+        scanf("%d %d", &a, &b);
+
+        maximum_b = max(maximum_b, b);
+        product_sum += a*b;
+    }
+
+    product_sum += increase*maximum_b;
+    printf("%d\n", product_sum);
+
+    return 0;
+}
