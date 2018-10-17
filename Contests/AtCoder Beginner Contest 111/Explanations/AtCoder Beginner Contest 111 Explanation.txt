@@ -1,0 +1,13 @@
+Keep incrementing n till all it's digits are different
+
+int main()
+{
+    int n;
+    scanf("%d", &n);
+
+    while(!all_digits_same(n))
+        n++;
+
+    printf("%d\n", n);
+    return 0;
+}
