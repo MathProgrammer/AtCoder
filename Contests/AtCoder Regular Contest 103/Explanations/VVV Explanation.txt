@@ -1,0 +1,73 @@
+What if we had no requirement to keep the even and odd elements different ? 
+
+We just have to set both even and odd array elements to the most frequent element. 
+
+------------------------
+
+Now what if the most frequent element of even and odd array is the same ? What do we do ? 
+
+We set either - 
+
+1. Even to second most frequent element and odd to most frequent.
+2. Even to most frequent element and odd to most frequent element. 
+
+We choose whichever option leads to fewer changes. 
+
+-------------------
+
+int main()
+{
+    int no_of_elements;
+    scanf("%d", &no_of_elements);
+
+    const int MAX_N = 1e5 + 5;
+    vector <int> odd_frequency(MAX_N, 0);
+    vector <int> even_frequency(MAX_N, 0);
+
+    for(int i = 1; i <= no_of_elements; i++)
+    {
+        int element;
+        scanf("%d", &element);
+
+        if(i%2 == 0)
+        {
+            even_frequency[element]++;
+        }
+        else if(i%2 == 1)
+        {
+            odd_frequency[element]++;
+        }
+    }
+
+    int most_frequent_even_element = 0, second_most_frequent_even_element = 0;
+    get(even_frequency, most_frequent_even_element, second_most_frequent_even_element);
+
+    int most_frequent_odd_element = 0, second_most_frequent_odd_element = 0;
+    get(odd_frequency, most_frequent_odd_element, second_most_frequent_odd_element);
+
+    int changes;
+    int even_changes = 0, odd_changes = 0;
+    if(most_frequent_even_element != most_frequent_odd_element)
+    {
+        even_changes = no_of_elements/2 - even_frequency[most_frequent_even_element];
+        odd_changes = no_of_elements/2 - odd_frequency[most_frequent_odd_element];
+        changes = even_changes + odd_changes;
+    }
+    else if(most_frequent_even_element == most_frequent_odd_element)
+    {
+
+            even_changes = no_of_elements/2 - even_frequency[most_frequent_even_element];
+            odd_changes = no_of_elements/2 - odd_frequency[second_most_frequent_odd_element];
+            int option_1 = even_changes + odd_changes;
+
+
+            even_changes = no_of_elements/2 - even_frequency[second_most_frequent_even_element];
+            odd_changes = no_of_elements/2 - odd_frequency[most_frequent_odd_element];
+            int option_2 = even_changes + odd_changes;
+
+        changes = min(option_1, option_2);
+    }
+
+    printf("%d\n", changes);
+    return 0;
+}
