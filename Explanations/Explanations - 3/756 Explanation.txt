@@ -1,0 +1,34 @@
+We know that if N = p^a1 p2^a2 ... pm^am
+
+the number of factors = (a1 + 1)(a2 + 1) ... (am + 1)
+
+Now, let us try to find out how many ways it is possible to have 75 factors. 
+
+-------
+
+Case 1 - Single prime factor
+
+We have to choose a prime who's exponent is 74
+
+----------
+
+Case 2 - Two prime factors
+
+75 = (2 + 1)(24 + 1) = (4 + 1)(14 + 1)
+
+------------
+
+Case 3 - Three prime factors 
+
+75 = (2 + 1)(2 + 1)(4 + 1)
+
+Here we need to be careful to avoid over counting. 
+
+--------------
+
+int answer = primes_with_exponent_at_least[74];
+
+    answer += primes_with_exponent_at_least[24]*(primes_with_exponent_at_least[2] - 1);
+    answer += primes_with_exponent_at_least[14]*(primes_with_exponent_at_least[4] - 1);
+
+    answer +=  (primes_with_exponent_at_least[4]*(primes_with_exponent_at_least[4] - 1)*(primes_with_exponent_at_least[2] - 2))/2;
