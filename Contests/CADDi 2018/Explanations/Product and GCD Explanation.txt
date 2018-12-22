@@ -1,0 +1,41 @@
+Let us notice that the answer is independent over every prime factor of P. 
+
+Let the exponent of a prime factor p of P be e. 
+
+Then we will greedily distribute it to the N numbers in a round robin fashion. 
+
+The GCD will increase by ceil(e/N). 
+
+We do this for all the prime factors of P. 
+
+-------------
+
+int main()
+{
+    long long no_of_numbers, product;
+    cin >> no_of_numbers >> product;
+
+    map <long long, int> exponent;
+    for(long long i = 2; i*i <= product; i++)
+    {
+        while(product%i == 0)
+        {
+            exponent[i]++;
+            product /= i;
+        }
+    }
+
+    if(product > 1)
+        exponent[product]++;
+
+    long long gcd = 1;
+    for(map <long long, int> :: iterator it = exponent.begin(); it != exponent.end(); it++)
+    {
+        int this_exponent = it->second;
+
+        gcd *= power(it->first, this_exponent/no_of_numbers);
+    }
+
+    cout << gcd;
+    return 0;
+}
