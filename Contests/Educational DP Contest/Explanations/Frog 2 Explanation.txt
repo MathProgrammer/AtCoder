@@ -1,0 +1,32 @@
+Let f(i) be the total cost to reach stone i. We can get here from any of the stones from [i - 1, ... i - k]. 
+
+The cost to go from stone j to stone i is f(j) + |h(j) - h(i)|. 
+
+We take the minimum cost for each of the N stones and the answer is given by f(N).
+
+-----------
+
+int main()
+{
+    int no_of_stones, no_of_steps;
+    cin >> no_of_stones >> no_of_steps;
+
+    vector <int> height(no_of_stones + 1, 0);
+    for(int i = 1; i <= no_of_stones; i++)
+        cin >> height[i];
+
+    const int oo = 1e9;
+    vector <int> minimum_cost(no_of_stones + 1, oo);
+    minimum_cost[1] = 0;
+
+    for(int i = 2; i <= no_of_stones; i++)
+    {
+        for(int j = i - 1; j >= max(1, i - no_of_steps); j--)
+        {
+            minimum_cost[i] = min(minimum_cost[i], minimum_cost[j] + abs(height[i] - height[j]));
+        }
+    }
+
+    cout << minimum_cost[no_of_stones];
+    return 0;
+}
