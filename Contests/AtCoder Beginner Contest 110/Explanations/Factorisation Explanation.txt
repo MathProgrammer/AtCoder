@@ -16,7 +16,7 @@ This is given by C(e1 + n - 1, N).
 
 Each prime factors is independent. 
 
-So answer = C(e1 + N - 1, N) x C(e2 + N - 1 ,N)
+So answer = C(e1 + N - 1, N - 1) x C(e2 + N - 1 ,N - 1)
 
 --------------
 
