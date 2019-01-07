@@ -1,0 +1,59 @@
+Let f(v, c) be the number of ways to colour the subtree rooted at v, if the root vertex v has colour c. 
+
+Now there are two options, 
+
+Case 1 - c is Black. 
+
+Then all of v's children must be white. 
+
+Let the children of v be v1 and v2. 
+
+Then f(v, black) = f(v1, white)*f(v2, white)
+
+-----------
+
+Case 2 - c is White. 
+
+Then each of v's children may be either black or white. 
+
+f(v, white) = (f(v1, white) + f(v1, black)*(f(v2, white) + f(v2, black)
+
+-------------
+
+Then answer if f(1, black) + f(1, white)
+
+----------
+
+long long dfs_count(int parent, int v, int colour)
+{
+    if(no_of_ways[v][colour] != -1)
+    {
+        return no_of_ways[v][colour];
+    }
+
+    no_of_ways[v][colour] = 1;
+
+    for(int i = 0; i < tree[v].size(); i++)
+    {
+        int child = tree[v][i];
+
+        if(child == parent) continue;
+
+        long long no_of_subtrees = 1;
+
+        if(colour == BLACK)
+        {
+            no_of_subtrees = dfs_count(v, child, WHITE);
+        }
+        else if(colour == WHITE)
+        {
+            no_of_subtrees = (dfs_count(v, child, BLACK) + dfs_count(v, child, WHITE))%MOD;
+        }
+
+        no_of_ways[v][colour] *= no_of_subtrees;
+
+	  no_of_ways[v][colour] %= MOD;
+    }
+
+    return no_of_ways[v][colour];
+}
