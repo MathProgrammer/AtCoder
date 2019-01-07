@@ -1,0 +1,62 @@
+Let f(v) represent the longest path from vertex v in terms of number of vertices. 
+
+Then if the children of v are c1 and c2
+
+f(v) = 1 + max{f(c1), f(c2)}
+
+The answer is f(v) - 1. 
+
+Because the question asks us to count the number of edges on the longest path. And a path of v vertices require exactly v - 1 edges. 
+
+We want to find the longest path in each component as it is not guaranteed that the graph is a single connected component.
+
+----------
+
+int dfs(int v)
+{
+    if(longest_path[v] != -1)
+    {
+        return longest_path[v] ;
+    }
+
+    int longest_child_path = 0;
+
+    for(int i = 0; i < graph[v].size(); i++)
+    {
+        int child = graph[v][i];
+
+        longest_child_path = max(longest_child_path, dfs(child));
+    }
+
+    longest_path[v] = 1 + longest_child_path;
+
+    return longest_path[v] ;
+}
+
+int main()
+{
+    int no_of_vertices, no_of_edges;
+    cin >> no_of_vertices >> no_of_edges;
+
+    for(int i = 1; i <= no_of_edges; i++)
+    {
+        int x, y;
+        cin >> x >> y;
+
+        graph[x].push_back(y);
+    }
+
+    memset(longest_path, -1, sizeof(longest_path));
+
+    int vertices_on_longest_path = 0;
+
+    for(int i = 1; i <= no_of_vertices; i++)
+        vertices_on_longest_path = max(vertices_on_longest_path, dfs(i));
+
+   
+    int edges_on_longest_path = vertices_on_longest_path - 1;
+
+    cout << edges_on_longest_path;
+
+    return 0;
+}
