@@ -1,0 +1,35 @@
+Whenever we choose an item, we decrease the possible weight we can carry. 
+
+So, let f(i, j) be the maximum value we get from the first i items with j weight remaining. 
+
+f(i, j) = max{f(i - 1, j), v[i] + f(i - 1, j - w[i])}
+
+This is the transition rule. 
+
+-----------------
+
+
+int main()
+{
+    int no_of_items, total_weight;
+    cin >> no_of_items >> total_weight;
+
+    for(int i = 1; i <= no_of_items; i++)
+        cin >> weight[i] >> value[i];
+
+    memset(maximum_value, 0, sizeof(maximum_value));
+
+    for(int i = 1; i <= no_of_items; i++)
+    {
+        for(int j = 1; j <= total_weight; j++)
+        {
+            if(j < weight[i])
+                maximum_value[i][j] = maximum_value[i - 1][j];
+            else
+                maximum_value[i][j] = max(maximum_value[i - 1][j], value[i] + maximum_value[i - 1][j - weight[i]]);
+        }
+    }
+
+    cout << maximum_value[no_of_items][total_weight];
+    return 0;
+}
