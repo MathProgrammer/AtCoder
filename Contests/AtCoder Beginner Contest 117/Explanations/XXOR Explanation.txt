@@ -1,3 +1,16 @@
+Suppose there was no restriction that x = K. How would we solve it ?
+
+We want to maximise the number of 1s in each column. So for every column, we will count the number of 1s. 
+
+If there are more 1s than 0s, then we will set that bit to 0 for x. 
+Else, we will set it to 1 for x. 
+
+The intention is that when we XOR it, we will get more 1s in that particular column. 
+
+Now, what do we do given that x <= K ?
+
+------------------
+
 Let us make an observation. 
 
 Any number <= K, will have a matching prefix till some bit in K and will have a 0 where K has a 1 and after that can have any value. 
@@ -11,6 +24,14 @@ All numbers smaller than K will be of the form -
 1000001000?
 
 -----------
+
+We will match the prefix till some bit where K has a 1 and set it to 0. 
+
+From that bit onwards, we will greedily set the bits as we please in the above mentioned manner. 
+
+The number of such masks we will check will be equal to the number of 1s in K, which is at most log K.
+
+-----------------
 
 We also want the sum to be as large as possible. If we want the sum to be large, we need to maximise the number of 1s in each column. 
 
@@ -58,7 +79,7 @@ long long get_mask_with_prefix_till(long long n, int replaced_one)
         }
         else
         {
-            if(2*no_of_1s[bit] < no_of_numbers)
+            if(2*no_of_1s[bit] < no_of_numbers) // Setting a 1 only if less than half the bits are 1. 
             {
                 mask |= (1LL << bit);
             }
