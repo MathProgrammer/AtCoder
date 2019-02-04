@@ -1,0 +1,49 @@
+This is a very interesting problem. 
+
+Let us make a simple observation, it is always better to go from the leftmost to rightmost point. For a given point, we will never go in right and then go in left. 
+
+We will sort the N - 1 distances from Left to Right. 
+
+We will be greedy in this. As we can use M pieces, we will not travel the M greatest distances.
+
+We can use M pieces, so we only need to travel to (N - M) points. M points can be reached by merely placing the pieces on there. 
+
+(If M >= N, then we put a piece on every point and we are done.)
+
+We will place a piece at the first point. Now, we have to travel through (N - 1) distances with (M - 1) pieces. 
+
+Now, we will start with the first point and go from left to right. For each point, we will look at the distance between (A[i] and A[i + 1]). We will check if this distance is one of the greatest M distances. 
+
+If it is one of the M greatest distances, then we will place a new piece at A[i + 1]. 
+If not, we will move the piece at A[i] to A[i + 1].
+
+This is optimal because we avoid the greatest distances !
+
+-----
+
+int main()
+{
+    int no_of_pieces, no_of_points;
+    cin >> no_of_pieces >> no_of_points;
+
+    vector <int> A(no_of_points);
+    for(int i = 0; i < no_of_points; i++)
+        cin >> A[i];
+
+    sort(all(A));
+
+    vector <int> difference(no_of_points - 1);
+    for(int i = 0; i < no_of_points - 1; i++)
+        difference[i] = (A[i + 1] - A[i]);
+
+    sort(all(difference));
+
+    long long travel = 0;
+    int no_of_travels = max(0, no_of_points - no_of_pieces);
+
+    for(int i = 0; i < no_of_travels; i++)
+        travel += difference[i];
+
+    cout << travel << "\n";
+    return 0;
+}
