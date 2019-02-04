@@ -1,0 +1,92 @@
+Let us make an observation. 
+
+Any number <= K, will have a matching prefix till some bit in K and will have a 0 where K has a 1 and after that can have any value. 
+
+So, if K = 1000010010
+
+All numbers smaller than K will be of the form - 
+
+0??????????
+1000000????
+1000001000?
+
+-----------
+
+We also want the sum to be as large as possible. If we want the sum to be large, we need to maximise the number of 1s in each column. 
+
+So, we will match a certain prefix of K. 
+
+After this prefix, for column i, we will check if the N numbers have more 1-bits or more 0-bits. 
+
+If they have more 1-bits, we can set the bit in the mask = 0 as the XOR would produce 1. 
+If they have more 1-bits, we can set the bit in the mask = 1 as the XOR would produce 1. 
+
+-------------------------
+
+vector <long long> masks;
+    masks.push_back(K);
+    masks.push_back(0);
+
+    for(int bit = MAX_BITS; bit >= 0; bit--)
+    {
+        if(is_bit_set(K, bit))
+        {
+            long long mask = get_mask_with_prefix_till(K, bit);
+
+            masks.push_back(mask);
+        }
+    }
+
+-------------
+
+long long get_mask_with_prefix_till(long long n, int replaced_one)
+{
+    long long mask = 0;
+
+    for(int bit = MAX_BITS; bit >= 0; bit--)
+    {
+        if(bit > replaced_one)
+        {
+            if(is_bit_set(n, bit))
+            {
+                mask |= (1LL << bit);
+            }
+        }
+        else if(bit == replaced_one)
+        {
+            continue;
+        }
+        else
+        {
+            if(2*no_of_1s[bit] < no_of_numbers)
+            {
+                mask |= (1LL << bit);
+            }
+        }
+    }
+
+    return mask;
+}
+
+-----------------
+
+After we generate the masks like this, we will check the value of each mask. There can be at most log K such masks. 
+Complexity is O(N log K)
+
+long long maximum_value = 0;
+    for(int m = 0; m < masks.size(); m++)
+    {
+        maximum_value = max(maximum_value, get_value(A, masks[m]));
+    }
+
+-------------
+
+long long get_value(vector <long long> &A, long long mask)
+{
+    long long sum = 0;
+
+    for(int i = 1; i <= no_of_numbers; i++)
+        sum += (A[i]^mask);
+
+    return sum;
+}
