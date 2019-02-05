@@ -1,0 +1,54 @@
+We must notice that H, W are quite small. 
+
+To know the cost till the square who's value is x, we need to know value till square who's value is x - D.
+
+This problem has a very interesting inversion idea. 
+
+Rather than keep track of value[x][y], 
+
+We will keep track of X[value] and Y[value]. 
+
+This will prove helpful for us. As to know the previous square from x. 
+
+We can precompute the cost till every value and answer each query in O(1) time. 
+
+----------------
+
+int main()
+{
+    int height, width, d;
+    cin >> height >> width >> d;
+
+    vector <int> X(height*width + 1);
+    vector <int> Y(height*width + 1);
+
+    for(int i = 1; i <= height; i++)
+    {
+        for(int j = 1; j <= width; j++)
+        {
+            int value;
+            cin >> value;
+
+            X[value] = i;
+            Y[value] = j;
+        }
+    }
+
+    vector <int> cost(height*width + 1, 0);
+    for(int i = d + 1; i <= height*width; i++)
+    {
+        cost[i] = cost[i - d] + abs(X[i - d] - X[i]) + abs(Y[i - d] - Y[i]);
+    }
+
+    int no_of_queries;
+    cin >> no_of_queries;
+
+    while(no_of_queries--)
+    {
+        int left, right;
+        cin >> left >> right;
+        cout << (cost[right] - cost[left]) << "\n";
+    }
+
+    return 0;
+}
