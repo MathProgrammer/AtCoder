@@ -1,0 +1,11 @@
+k >= ceil(n/2)
+
+---------------
+
+int main()
+{
+    int n, k;
+    cin >> n >> k;
+    cout << (k <= ceil(n,2) ? "YES\n" : "NO\n");
+    return 0;
+}
