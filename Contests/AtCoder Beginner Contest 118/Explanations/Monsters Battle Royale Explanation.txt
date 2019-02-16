@@ -1,0 +1,79 @@
+1. Suppose H[i] > H[j]. 
+
+If monster i attacks monster j, monster j's health becomes 0 and monster i survives. 
+
+If monster i attacks monster j, monster j becomes H[j]%H[i] and monster i is the survivor. 
+
+(In the latter case, the last suvivor has smaller health.)
+
+------------
+
+2. We will always get a smaller survivor if we pick the monster with the smallest health at any given point of time. 
+
+We will start with the smallest integer m, available and start reducing the numbers one by one. If some integer becomes smaller than m and is > 0, then we will make it the smallest integer and then attack the remaining integers. 
+
+------------
+
+Another way of solving this problem is by constantly choosing the smallest available monster and allowing him to attack all the other monsters till no monsters are available.
+
+In one iteration, we will - 
+
+1. Choose the smallest available monster. Let the health be m. 
+2. Reduce all other H[i] to H[i]%m. 
+
+We will stop when there is only one number > 0.
+
+-----------
+
+We need to prove that there won't be too 'many' of these iterations. 
+
+We have some integers (A1, A2, ... , An) and in every move we will reduce it to (A1%x, A2%x, ... , An%x), where x is the smallest integer > 0.
+
+This is somewhat similar to Euclid's GCD Algorithm and the worst case might be when we have consecutive Fibonacci numbers. So there won't be much more than log(Max(A)) iterations.
+
+-----------
+
+Here is one iteration
+
+void simulate_fight(vector <int> &H)
+{
+    int smallest, smallest_position = H.size();
+    for(int i = 0; i < H.size(); i++)
+    {
+        if(H[i] != 0)
+        {
+            smallest = H[i];
+            smallest_position = i;
+            break;
+        }
+    }
+
+    for(int i = smallest_position + 1; i < H.size(); i++)
+    {
+        H[i] %= smallest;
+    }
+
+    sort(all(H));
+}
+
+------------
+
+int main()
+{
+    int no_of_monsters;
+    cin >> no_of_monsters;
+
+    vector <int> health(no_of_monsters, 0);
+    for(int i = 0; i < no_of_monsters; i++)
+        cin >> health[i];
+
+    sort(all(health));
+
+    while(health[no_of_monsters - 2] > 0)
+    {
+        simulate_fight(health);
+    }
+
+    cout << health[no_of_monsters - 1];
+    return 0;
+}
