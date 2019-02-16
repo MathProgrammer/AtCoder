@@ -1,0 +1,71 @@
+1. We need to maximise the length of the number. 
+
+2. If there are ties over maximum length, we need to break the tie by using the largest possible number at every position.
+
+------------
+
+Let f(i) represent the maximum length number we can form by total cost exactly i. 
+
+Initially, f(0) = 0 and for all other i, f(i) = -oo because we will assume it is not possible to make any string with cost i for other i. 
+
+We will maintain another array A. 
+
+A(i, d) represents the total length if we use exact cost i with the last digit d. 
+
+For all digits that are present, A(i, d) = 1 + f(i - C[d])
+
+The reason is d is the last digit and we have increased the length 1. Now, we have length i - C[d].
+
+    vector <int> max_length(total_cost + 1, -oo);
+    max_length[0] = 0;
+
+    for(int cost = 1; cost <= total_cost; cost++)
+    {
+        for(int last_digit = 1; last_digit <= MAX_DIGIT; last_digit++)
+        {
+            if(!is_present[last_digit] || digit_cost[last_digit] > cost)
+                continue;
+
+            int remaining_cost = cost - digit_cost[last_digit];
+
+            max_length_with_last_digit[cost][last_digit] = 1 + max_length[remaining_cost];
+
+            max_length[cost] = max(max_length[cost], max_length_with_last_digit[cost][last_digit]);
+        }
+    }
+
+---------
+
+This helps us find the maximum length, but how do we actually print the highest number ? 
+
+We will first fix i = Max Cost. 
+
+Then iterate d from 9 to 1. When we find a d such that A(i, d) = f(i), 
+
+Then we will use d as our latest digit in the answer and update the cost to (i - C(d))
+
+The reason is if A(i, d) = f(i), then it means that the length of the number total cost i, 
+last digit d is equal to the maximum length of cost i.
+
+And d is the largest integer that has this property so we will use the digit d.
+
+    vector <int> answer;
+
+    for(int cost = total_cost; cost > 0; )
+    {
+        for(int last_digit = MAX_DIGIT; last_digit >= 1; last_digit--)
+        {
+            if(!is_present[last_digit])
+                continue;
+
+            if(max_length_with_last_digit[cost][last_digit] == max_length[cost])
+            {
+                answer.push_back(last_digit);
+
+                cost -= digit_cost[last_digit];
+
+                break;
+            }
+        }
+    }
+    
