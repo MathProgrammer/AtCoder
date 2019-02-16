@@ -1,0 +1,57 @@
+We can solve this problem in the following way - 
+
+1. In one step, choose the largest and smallest monster. 
+
+Let it be H[i] and H[j] respectively. 
+
+Reduce H[j] to (H[j]%H[i]).
+
+2. If H[j] is 0, remove it from the list. 
+
+3. Keep doing it till the list has only one element. 
+
+-------------
+
+This is optimal because in each step we are taking the smallest monster and making it attack the largest monster. 
+
+Use a multiset for these operations. Implementation is a little tricky.
+
+-------------
+
+int main()
+{
+    int no_of_elements;
+    cin >> no_of_elements;
+
+    multiset <int> H;
+    for(int i = 1; i <= no_of_elements; i++)
+    {
+        int health;
+        cin >> health;
+        H.insert(health);
+    }
+
+    while(H.size() > 1)
+    {
+        multiset <int> :: iterator it1 = H.begin();
+
+        int smallest = (*it1);
+
+        multiset <int> :: iterator it2 = (--H.end());
+
+        int largest = (*it2);
+
+        H.erase(it2);
+
+        largest %= smallest;
+
+        if(largest > 0)
+            H.insert(largest);
+    }
+
+    multiset <int> :: iterator it = H.begin();
+    int survivor = (*it);
+
+    cout << survivor;
+    return 0;
+}
