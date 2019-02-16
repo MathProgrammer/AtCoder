@@ -1,0 +1,31 @@
+We have (A1, A2, ... , An)
+
+In each move, we reduce each to (A1%x, A2%x, ... , An%x), 
+and x is always some element from the array. 
+
+In the end the array will be 
+
+(0, 0, 0, ... , X)
+
+Notice that the gcd is invariant as taking the mod does not change the gcd. 
+
+Hence, when there is only one number left, it has to be the GCD. 
+
+------
+
+int main()
+{
+    int no_of_elements;
+    cin >> no_of_elements;
+
+    int array_gcd;
+    for(int i = 1; i <= no_of_elements; i++)
+    {
+        int health;
+        cin >> health;
+        array_gcd = (i == 1 ? health : gcd(array_gcd, health));
+    }
+
+    cout << array_gcd;
+    return 0;
+}
