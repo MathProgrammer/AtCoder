@@ -1,0 +1,115 @@
+For each query point x, let us maintain 4 quantities - 
+
+1. Left Most Temple 
+2. Left Most Shrine
+3. Right Most Temple
+4. Right Most Shrine
+
+-------
+
+What is the best strategy for each query point x ? 
+
+We can start at x and 
+
+1. Go in only one direction 
+
+--> So we can go only right and meet both the right most temple and shrine.
+
+--> We can go left and meet both the left most temple and shrine.
+
+2. Go in two directions 
+
+We first go left and then right
+
+--> We can go left and meet the first shrine and then go to the first temple on the right. 
+
+--> We can go left and meet the first temple and then go to the first shrine on the right.
+
+===
+
+We first go right and then left
+
+---> We can go to the first temple on the right and then go to the first shrine on the left. 
+
+--> We can go to the first shrine on the right and then go to the first temple on the left. 
+
+---------
+
+for(int i = 1; i <= no_of_queries; i++)
+    {
+        LL going_only_right = max(query[i].right_most_temple, query[i].right_most_shrine) - query[i].position;
+        LL going_only_left = query[i].position - min(query[i].left_most_temple, query[i].left_most_shrine);
+
+        LL one_way = min(going_only_left, going_only_right);
+
+        LL right_first_then_left = min(2*(query[i].right_most_temple - query[i].position) + query[i].position - query[i].left_most_shrine,
+                                       2*(query[i].right_most_shrine - query[i].position) + query[i].position - query[i].left_most_temple);
+
+        LL left_first_then_right = min(2*(query[i].position - query[i].left_most_temple) + query[i].right_most_shrine - query[i].position,
+                                       2*(query[i].position - query[i].left_most_shrine) + query[i].right_most_temple - query[i].position);
+
+        LL two_way = min(right_first_then_left, left_first_then_right);
+
+        answer[query[i].index] = min(one_way, two_way);
+    }
+
+-------
+
+Now, how do we find the left most temple and left most shrine to each query point ? 
+
+We will place a temple and shrine at -oo and +oo for convenience. 
+
+Then we will sort the temples, shrines and queries each. 
+
+Let LT be the pointer to the left most temple.
+Let LS be the pointer to the left most shrine. 
+
+Let Q be the pointer to the current query.
+
+We will maintain the following invariant - 
+
+Temple[LT] <= Q and Shrine[LS] <= Q
+
+Initially, LT = LS = 0, pointing to -oo so the condition holds. 
+
+As long as the condition continues to hold, we will increment the pointers.
+
+int left_temple = 0, left_shrine = 0;
+
+    for(int current_query = 1; current_query <= no_of_queries; current_query++)
+    {
+        while(temple[left_temple + 1] <= query[current_query].position)
+            left_temple++;
+
+        while(shrine[left_shrine + 1] <= query[current_query].position)
+            left_shrine++;
+
+        query[current_query].left_most_temple = temple[left_temple];
+        query[current_query].left_most_shrine = shrine[left_shrine];
+    }
+
+-----------------
+
+To find the right most temple and right most shrine, we will do the same thing except now maintain the invariant that 
+
+Q <= Temple[RT] and Q <= Shrine[RS]
+
+Initially RT and RS are both pointing to the temple and shrine at +oo respectively so the condition is true in the beginning. 
+
+As long as the condition continues to hold, we will decrement the pointers. 
+
+When we stop, we have found the right most temple and right most shrine.
+
+int right_temple = no_of_temples + 1, right_shrine = no_of_shrines + 1;
+
+    for(int current_query = no_of_queries; current_query >= 1 ;current_query--)
+    {
+        while(query[current_query].position <= temple[right_temple - 1])
+            right_temple--;
+
+        while(query[current_query].position <= shrine[right_shrine - 1])
+            right_shrine--;
+
+        query[current_query].right_most_temple = temple[right_temple];
+        query[current_query].right_most_shrine = shrine[right_shrine];
+    }
