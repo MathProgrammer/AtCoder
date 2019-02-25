@@ -1,0 +1,65 @@
+We must notice that the operation of adding or subtracting 1 does not affect the operation of 'combining' two or more bamboos. 
+
+For every bamboo, there are 4 options - 
+
+1. It is not touched. 
+2. It is added to the total of A.
+3. It is added to the total of B. 
+4. It is added to the total of C.
+
+-----------
+
+Let us brute force through all these possibilities. There are only 8 bamboos. We can brute force through these 4^8 = 2^16 possibilities. 
+
+Let us say a = b = c = 0 at the beginning. 
+
+We will brute force through these possibilities and add 10 to the cost at each step.
+
+When we have finished processing all bamboos, we can then increment and decrement as many times as we want to so that we get A, B and C.
+
+So the final cost is |a - A| + |b - B| + |c - C| - 30
+
+--------
+
+Why do we subtract 30 in the end ?
+
+Because the process of adding one bamboo to one of (a, b, c) corresponds to the operation of choosing a bamboo for one of (a, b, c). 
+
+The process of choosing the second bamboo of (a, b, c) corresponds to addition.
+
+There is only cost of adding. There is no cost for choosing a bamboo. So we subtract the first 10 for each of (a, b, c).
+
+----------
+
+What do we do when do not add anything to any of (a, b, c) ? 
+
+We must reject it and return oo. 
+
+Why ? 
+
+Because we have not chosen a bamboo for (a, b, c).
+
+We cannot apply addition/subtraction if we have not chosen a pre-existing bamboo. (It is not allowed to increment a bamboo from scratch.)
+
+So, not choosing a bamboo is not valid. 
+
+-----------
+
+int dfs(int N, int a, int b, int c)
+{
+    if(N == 0)
+        return (min_3(a, b, c) > 0 ? abs(a - A) + abs(b - B) + abs(c - C) - 30: oo);
+
+    int do_nothing = dfs(N - 1, a, b, c);
+    int add_a = dfs(N - 1, a + bamboo[N], b, c) + 10;
+    int add_b = dfs(N - 1, a, b + bamboo[N], c) + 10;
+    int add_c = dfs(N - 1, a, b, c + bamboo[N]) + 10;
+
+    int minimum_adding = min_3(add_a, add_b, add_c);
+    int minimum = min(do_nothing, minimum_adding);
+
+    return minimum;
+}
+
+----------------
+
