@@ -1,0 +1,52 @@
+Suppose we try to maximise - Sum of X + Sum of Y + Sum of Z
+
+Then, if we choose an element A = {X, Y, Z}, what is the contribution of A to the sum ? 
+
+A contributes (X + Y + Z) to the sum. 
+
+We will choose the M elements who have the greatest value of (X + Y + Z).
+
+-----------
+
+Now, suppose we try to maximise - Sum of X + (Negative Sum of Y) + Sum of Z 
+
+What is the contribution of A now ? 
+
+It is X - Y + Z.
+
+(If Y is negative, then it will be added and otherwise subtracted. We are checking what the maximum sum of Y in the negative direction can be, keeping the other 2 positive.)
+
+Here we will sort and pick the elements which have the greatest value of (X - Y + Z).
+
+---------
+
+The final sum will be in one of 8 directions - each of X, Y and Z may be maximised in either the positive or negative direction. 
+
+We will try to maximise in all of the 8 directions and then find the maximum each time.
+
+--------
+
+for(int mask = 0; mask < MAX_MASK; mask++)
+    {
+        vector <LL> current_sum(no_of_elements, 0);
+
+        for(int i = 0; i < no_of_elements; i++)
+        {
+            for(int t = 0; t < TYPES; t++)
+            {
+                current_sum[i] += (is_bit_set(mask, t) ? A[i][t] : -A[i][t]);
+            }
+        }
+
+        sort(all(current_sum));
+        reverse(all(current_sum));
+
+        LL sum_here = 0;
+        for(int i = 0; i < target;i++)
+        {
+            sum_here += current_sum[i];
+        }
+
+        best_sum = max(best_sum, sum_here);
+    }
+
