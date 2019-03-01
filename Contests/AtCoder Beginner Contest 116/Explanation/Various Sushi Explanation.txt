@@ -1,0 +1,88 @@
+Let us sort the sushi's by their value. 
+
+Now, we will first choose the greatest K values.
+
+Then, we will try to be greedy and see if there is a better answer in choosing smaller values but increasing the number of distinct types. 
+
+---------
+
+Fact - If we have two sushi's of the same type, it is always better to choose the one of higher value. 
+
+This does not increase or decrease the number of distinct types. 
+
+We will keep a Priority Queue - Q. 
+
+In this queue, we will insert the value of every sushi EXCEPT the largest sushi of it's type. 
+
+----
+
+When we encounter a new sushi, we will remove the smallest element of the priority queue and insert the new element in and it will increase the number of distinct types we have. 
+
+The change is (A[i].value - smallest) + {(d + 1)^2 - d^2}
+
+--------
+
+We will continue this process till we have taken K distinct types. After this we don't need to check as the number of distinct types will not increase.
+
+------
+
+Note - As we have sorted the sushis by value, we will push every value into Q except the first of a type. 
+
+Refer my code for more clarity.
+------
+
+int main()
+{
+    int no_of_elements, no_of_choices;
+    cin >> no_of_elements >> no_of_choices;
+
+    vector <info> A(no_of_elements);
+    for(int i = 0; i < no_of_elements; i++)
+        cin >> A[i].type >> A[i].value;
+
+    sort(all(A));
+    reverse(all(A));
+
+    vector <int> used(no_of_elements + 1, false);
+    priority_queue <long long,vector<long long>, greater<long long> >Q;
+
+    long long sum = 0, distinct_types = 0;
+    for(int i = 0; i < no_of_choices; i++)
+    {
+        sum += A[i].value;
+
+        if(!used[A[i].type])
+        {
+            used[A[i].type] = true;
+            distinct_types++;
+        }
+        else
+        {
+            Q.push(A[i].value);
+        }
+    }
+    sum += distinct_types*distinct_types;
+
+    long long new_sum = sum;
+
+    for(int i = no_of_choices; i < no_of_elements; i++)
+    {
+        if(used[A[i].type] || Q.size() == 0) continue;
+
+        long long smallest = Q.top();
+
+        new_sum += (A[i].value - smallest) + (distinct_types + 1)*(distinct_types + 1) - (distinct_types*distinct_types);
+
+        Q.pop();
+
+        distinct_types++;
+
+        used[A[i].type] = true;
+
+
+        sum = max(sum, new_sum);
+    }
+
+    cout << sum;
+    return 0;
+}
