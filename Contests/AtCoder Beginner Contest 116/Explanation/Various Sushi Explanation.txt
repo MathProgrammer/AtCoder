@@ -1,34 +1,61 @@
-Let us sort the sushi's by their value. 
+Fact 1 - If we have two sushi's of the same type, it is always better to choose the one of higher value. 
+
+-------------
+
+Fact 2 - If we want to increase the number of distinct sushis, it is always better to exchange some sushi who's type occurs more than one time. 
+
+Reason - If we swap a sushi who's type only occurs one time, then we do not increase the number of distinct sushis.
+
+----------
+
+Let us sort the sushi's by their value - d1 > d2 > ... > dN.
 
 Now, we will first choose the greatest K values.
+
+We will also keep a priority queue Q, which consists of values of all sushi's who's types occurs more than once EXCEPT the greatest. 
+
+FOr example, suppose sushi of type 3 has 3 values = {5, 6, 7}
+Suppose there is another sushi of type 1 which has 2 values = {8, 9}
+
+Then our priority queue Q will be {5, 6, 8, 9}
 
 Then, we will try to be greedy and see if there is a better answer in choosing smaller values but increasing the number of distinct types. 
 
 ---------
 
-Fact - If we have two sushi's of the same type, it is always better to choose the one of higher value. 
+Fact - As we have sorted the array by value, we will not add the first value of a new type that we encounter as it will be the largest. 
 
-This does not increase or decrease the number of distinct types. 
+-----
 
-We will keep a Priority Queue - Q. 
+At first, we will just choose the largest K values. 
 
-In this queue, we will insert the value of every sushi EXCEPT the largest sushi of it's type. 
+----
+
+Then, we will scan the rest of the array. 
+
+Fact - If (A[i].type) has already occured, then there is not point in examining if we should take it.
+
+Reason - The array is sorted by value, so this means we have chosen a higher value of (A[i].type) already and we will not be increasing number of distinct types. 
+
+If this leads to a better sum, we will update the sum.
 
 ----
 
 When we encounter a new sushi, we will remove the smallest element of the priority queue and insert the new element in and it will increase the number of distinct types we have. 
 
+
 The change is (A[i].value - smallest) + {(d + 1)^2 - d^2}
 
 --------
 
-We will continue this process till we have taken K distinct types. After this we don't need to check as the number of distinct types will not increase.
+Fact - We will only go on till we have K distinct types and stop. 
 
-------
+Reason - There can only be K distinct types. After that if we continue, we will be keeping the number of distinct types same, but reducing the value.
 
-Note - As we have sorted the sushis by value, we will push every value into Q except the first of a type. 
+----
 
 Refer my code for more clarity.
+
 ------
 
 int main()
