@@ -17,7 +17,7 @@ We will also keep a priority queue Q, which consists of values of all sushi's wh
 FOr example, suppose sushi of type 3 has 3 values = {5, 6, 7}
 Suppose there is another sushi of type 1 which has 2 values = {8, 9}
 
-Then our priority queue Q will be {5, 6, 8, 9}
+Then our priority queue Q will be {5, 6, 8}
 
 Then, we will try to be greedy and see if there is a better answer in choosing smaller values but increasing the number of distinct types. 
 
