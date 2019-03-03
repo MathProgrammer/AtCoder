@@ -1,0 +1,69 @@
+Here are two equivalent questions - 
+
+1.Given a graph, keep removing edges one by one, and count the number of pairs that are un-reachable after each move. 
+
+2. Given a graph, add edges one by one and count the number of pairs that are reachable after each move.
+
+-----
+
+The question asks us (1) but we can reduce it to (2) by simply adding the edges in the reverse order in which it is given.
+
+That is the main insight of the question. We must approach it backwards.
+
+----
+
+Let f(i) denote the number of reachable pairs if we have added all the edges from [i, M].
+
+Let us maintain a DSU, so that we can keep track of the sizes of each component. 
+
+Now, when we are adding edge (u, v) to the graph, 
+
+1. U and V lie in the same connected component of the graph. 
+
+In this case, the number of reachable pairs does not increase. 
+
+2. U and V are not in the same connected component of the graph.
+
+In this case, the number of reachable pairs increases by C[u]*C[v], 
+
+where C[u] denotes the size of the connected component of u.
+
+---
+
+DSU dsu(no_of_vertices);
+
+    for(int i = no_of_edges; i >= 1; i--)
+    {
+        connected_pairs[i] = connected_pairs[i + 1];
+
+        int parent_u = dsu.get_parent(edge[i].u), parent_v = dsu.get_parent(edge[i].v);
+        
+        if(parent_u == parent_v)
+            continue;
+
+        LL component_u = dsu.component_size[parent_u], component_v = dsu.component_size[parent_v];
+
+        connected_pairs[i] += component_u*component_v; 
+        
+        dsu.unite(edge[i].u, edge[i].v);
+    }
+
+-------
+
+Now, we have the number of reachable pairs after we add Edge i to the graph for all i in [1, M], starting from edge M.
+
+How do we find the number of unreachable pairs after deleting each Edge i?
+
+The number of unreachable pairs after deleting Edges [1, i] is equal to the total number of pairs, P - Number of reachable pairs after adding Edges[i + 1, M]. 
+
+The reason is that whichever pair can be reached by adding edges [i + 1, M] is not affected by deleting the first i edges. Hence, we can consider that we only have a graph where edges[i + 1, M] has been added.
+
+P = C(M, 2)
+
+Answer = P - f(i + 1)
+
+---------
+
+vector <LL> disconnected_pairs(no_of_edges + 1);
+    for(int i = 1; i <= no_of_edges; i++)
+        disconnected_pairs[i] = no_of_pairs - connected_pairs[i + 1];

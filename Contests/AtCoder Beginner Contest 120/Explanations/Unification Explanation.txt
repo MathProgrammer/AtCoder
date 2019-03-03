@@ -1,0 +1,36 @@
+Claim - It is always possible to remove a pair as long as the string has at least one character of each type. 
+
+Proof - We can always make a move when one of the neighbours of 0 is 1.
+
+If there is no 0 which has a neighbour of 1, then it means that there is either no 0 in the string or only 0s in the string. 
+
+In all other situations, there will be at least one 0 which has a neighbour which is 1 which allows a move.
+
+------
+
+So, suppose M = min(frequency[0], frequency[1])
+
+We can do M moves. 
+
+Each move removes 2 characters. 
+
+Hence, we will remove 2M characters.
+
+----
+
+int main()
+{
+    string S;
+    cin >> S;
+
+    const int MAX_ELEMENTS = 2;
+    vector <int> frequency(MAX_ELEMENTS, 0);
+    for(int i = 0; i < S.size(); i++)
+        frequency[S[i] - '0']++;
+
+    int minimum_frequency = min(frequency[0], frequency[1]);
+    int answer = 2*minimum_frequency;
+
+    cout << answer;
+    return 0;
+}
