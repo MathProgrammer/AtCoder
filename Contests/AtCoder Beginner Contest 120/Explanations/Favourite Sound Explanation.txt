@@ -1,0 +1,19 @@
+If we buy as many as we can, then we will be taking B/A. 
+
+But we cannot take more than C. 
+
+So the answer = Min{B/A, C}
+
+------
+
+
+int main()
+{
+    int A, B, C;
+    cin >> A >> B >> C;
+
+    int answer = min(B/A, C);
+    cout << answer;
+
+    return 0;
+}
