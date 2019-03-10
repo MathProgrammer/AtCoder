@@ -1,0 +1,80 @@
+The question does not ask us to minimise the number of moves. 
+
+First, we will sweep through the grid row-wise. 
+
+If we encounter a cell with odd number of coins, then move it from (x, y) to (x, y + 1). 
+
+Of course, we cannot do this when we are at the last column. 
+
+This ensures that all the cells except those in the last column are even. 
+
+-------
+
+Then go through the cells of the last column. 
+
+If (x, y) is odd, move a coin to (x + 1, y). 
+
+Of course, this cannot be done when we have reached the last cell. 
+
+-------
+
+This ensures that at most one cell is odd. 
+
+If there is an odd cell, it will be cell (H, W). All other cells will be even. 
+
+--------
+
+This is optimal. If the sum of thie grid is even, then all cells will be even. 
+
+If the sum of the grid is odd, then at least one cell is odd and we have ensured that only one cell is odd. 
+
+-----
+
+int main()
+{
+    int rows, columns;
+    scanf("%d %d", &rows, &columns);
+
+    memset(grid, 0, sizeof(grid));
+
+    for(int i = 1; i <= rows; i++)
+    {
+        for(int j = 1; j <= columns; j++)
+        {
+            scanf("%d", &grid[i][j]);
+        }
+    }
+
+    vector <Move> moves;
+    for(int i = 1; i <= rows; i++)
+    {
+        for(int j = 1; j < columns; j++)
+        {
+            if(grid[i][j]%2 == 0) continue;
+
+            moves.push_back(Move(i, j, i, j + 1));
+
+            grid[i][j]--;
+            grid[i][j + 1]++;
+
+        }
+    }
+
+    for(int i = 1; i < rows; i++)
+    {
+        int j = columns;
+
+        if(grid[i][j]%2 == 0) continue;
+
+        moves.push_back(Move(i, j, i + 1, j));
+
+        grid[i][j]++;
+        grid[i + 1][j]--;
+    }
+
+    printf("%d\n", moves.size());
+    for(int i = 0; i < moves.size(); i++)
+        moves[i].display();
+
+    return 0;
+}
