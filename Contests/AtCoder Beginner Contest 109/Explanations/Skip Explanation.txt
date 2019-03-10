@@ -1,0 +1,55 @@
+The invariant that (x mod D) does not change. 
+
+We need to choose a number D, such that X (mod D) is equal for all X.
+
+X1 = X2 (mod D) => X1 - X2 = 0 (mod D). 
+
+We need to find a D that divides all the C(n, 2) differences. This is simply the GCD of all the differences. 
+
+However, we do not need to find all C(n, 2) differences. It is sufficient if we just take N - 1 differences after sorting.
+
+--------
+
+Proof - 
+
+X[i] - X[i - 1] = 0 (mod D)
+X[i - 1] - X[i - 2] = 0 (mod D)
+X[i - 2] - X[i - 3] = 0 (mod D)
+...
+.
+.
+X[j + 1] - X[j] = 0 (mod D)
+
+So, X[i] - X[j] = 0 (mod D)
+
+If D divides all the (N - 1) consecutive differences, it will divide all C(N, 2) differences.
+
+Also, if D divides all C(N, 2) differences, it will divide the (N - 1) consecutive difference. 
+
+So, this condition is both necessary and sufficient.
+
+--------
+
+int main()
+{
+    int no_of_cities, start_location;
+    scanf("%d %d", &no_of_cities, &start_location);
+
+    vector <int> locations(no_of_cities + 1);
+    locations[0] = start_location;
+    for(int i = 1; i <= no_of_cities; i++)
+        scanf("%d", &locations[i]);
+
+    sort(all(locations));
+
+    vector <int> difference(no_of_cities);
+    for(int i = 0; i < no_of_cities; i++)
+        difference[i] = locations[i + 1] - locations[i];
+
+    int gcd = difference[0];
+    for(int i = 1; i < no_of_cities; i++)
+        gcd = __gcd(gcd, difference[i]);
+
+    printf("%d\n", gcd);
+    return 0;
+}
