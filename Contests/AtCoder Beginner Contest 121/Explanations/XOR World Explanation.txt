@@ -1,0 +1,42 @@
+Firstly, it is clear that the answer = XOR(1, ... R)^ XOR(1, ... , L - 1). 
+
+Secondly, how do we calculate XOR(1, ... n)
+
+I first came up with a solution that treated each of the bits independently but there was a bug which I could not find. 
+
+The editorial solution uses a beautiful fact - XOR(1, ... , n) = 0 if n = 0 (mod 4).
+
+Why ? 
+
+Let us look at any bit position. After any even number n, the number of 1s in any bit position is even. 
+
+If the number of occurences of a 1 in a bit position is 2m, then even m is an even number if n is a multiple of 4. 
+
+(If n is a multiple of 2 but not of 4, then this is not true.)
+
+So, the ones cancel each other out.
+
+------
+
+LL xor_till(LL n)
+{
+    LL left = (n/4)*4, right = n;
+
+    LL answer = 0;
+
+    for(LL i = left; i <= right; i++)
+        answer ^= i;
+
+    return answer;
+}
+
+int main()
+{
+    LL left, right;
+    cin >> left >> right;
+
+    LL xor_answer = xor_till(right)^xor_till(left - 1);
+
+    cout << xor_answer;
+    return 0;
+}
