@@ -1,0 +1,36 @@
+There are 26 alphabets. The final subsequence can have 
+
+1. 0 or more As
+2. 0 or more Bs
+3. 0 or more Cs
+
+and so on. 
+
+So the answer  = (f(a) + 1)(f(b) + 1) ... (f(z) + 1) - 1
+
+It is quite similar to counting the number of factors of an integer.
+
+We subtract 1 to discount the case where we have chosen 0 of all alphabets and have the empty string. 
+
+------
+
+int main()
+{
+    int length;
+    string S;
+    cin >> length >> S;
+
+    const int NO_OF_ALPHABETS = 26, MOD = 1e9 + 7;;
+    vector <long long> frequency(NO_OF_ALPHABETS, 0);
+    for(int i = 0; i < length; i++)
+        frequency[S[i] - 'a']++;
+
+    long long colourful_sequences = 1;
+    for(int alpha = 0; alpha < NO_OF_ALPHABETS; alpha++)
+        colourful_sequences = ( (colourful_sequences*(frequency[alpha] + 1))%MOD );
+
+    colourful_sequences = (colourful_sequences + MOD - 1)%MOD;
+
+    cout << colourful_sequences;
+    return 0;
+}
