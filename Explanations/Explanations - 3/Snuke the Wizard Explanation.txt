@@ -1,0 +1,66 @@
+This requires a very important observation. The marbles never jump over each other. 
+
+1. If marble at position x falls off at end 1, then every marble from [1, x] also falls at end 1. 
+
+2. If marble at position y falls of at end N, then every marble from [y, N] also falls at end N. 
+
+So, we will find the the rightmost marble that falls of at end 1 - X. 
+
+We will find the left most marble that falls of at end N - Y. 
+
+So, we can conclude that marbles in between [X + 1, Y - 1] will never fall at either end !
+
+------
+
+Now, how do we find out this X and Y ? 
+
+We will perform binary search. 
+
+I will demonstrate the binary search required to find out the right marble that falls of at end X. 
+
+We will maintain the invariant that L always points to some marble which falls off at end 1 and R always points to some marble which does not fall off at end 1. 
+
+L is initially 1 and R is initially N + 1. 
+
+We have always maintained this invariant. We will stop when R - L = 1, 
+When L and R point to consecutive positions, there is no need to go further as L is possible and L + 1 is not. 
+
+
+int left = 0, right = length + 1;
+    while(right - left > 1)
+    {
+        int mid = (left + right)/2;
+
+        if(displacement(S, mid, M) == 0)
+        {
+            left = mid;
+        }
+        else
+        {
+            right = mid;
+        }
+    }
+    int rightmost_to_fall_left = left;
+
+----
+
+We do the same thing to find out the leftmost marble to fall off at end N + 1 too.
+
+left = 0, right = length + 1;
+    while(right - left > 1)
+    {
+        int mid = (left + right)/2;
+
+        if(displacement(S, mid, M) == length + 1)b
+        {
+            right = mid;
+        }
+        else
+        {
+            left = mid;
+        }
+    }
+    int leftmost_to_fall_right = right;
+
+----
+
