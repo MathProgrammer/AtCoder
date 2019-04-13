@@ -1,0 +1,113 @@
+Observation 1 - It is always best to flip a whole segment of 0s. 
+
+If we flip less than an entire segment of 0s, we can always get more 1s by flipping the entire segment. 
+
+Suppose we flip more than one segment of 0s, then our answer cannot be more than it would be by flipping the largest segment of 0s that we have flipped. The segments of 1s become 0s and the length of the largest continuous segment cannot increase. 
+
+-----
+
+Now that we have made this observation, we must do this. 
+
+Rather than think of it as a string of 0s and 1s, let us maintain two arrays - 
+
+Z 
+O
+
+Z[i] will hold the length of the i-th segment of 0s
+
+O[i] will hold the length of the i-th segment of 1s
+
+Suppose S = 01110011011
+
+Then, 
+
+Z = | 1 | 2 | 1 |
+O = | 3 | 2 | 2 |
+
+We will flip some contiguous set of zero-segments. 
+
+We will flip Z[L] , Z[L + 1], ... , Z[R - 1], Z[R]
+
+When we flip K segments, we need to add the (K - 1) segments in between and the 2 segments at each end. So there will be K + 1 segments of 1 that should also be counted. 
+
+But, this is where we need to be careful.
+
+----
+
+The number of continuous ones will then be either
+
+1. Z[L] + O[L] + Z[L + 1] + O[L + 1] + ... + O[R - 1] + Z[R - 1] + O[R] + Z[R] + O[R + 1]
+
+or
+
+2. O[L - 1] + Z[L] + O[L] + ... + O[R] + Z[R - 1]
+
+---
+
+Suppose the first segment is of 0s. 
+Then Z[1] comes before O[1], Z[2] before O[2] , ... Z[i] before O[i]. 
+
+Then when we are taking the sum of the segment from [L, R], we need to add O[L - 1] seperately as an extra. 
+
+Suppose the first segment is of 1s. 
+Then O[1] comes before Z[1], O[2] before Z[2] and O[i] before Z[i]. 
+
+When we want the segment length of continuous 0s on flipping [L, R], we need to add O[R + 1] seperately. 
+
+---
+
+int main()
+{
+    int length, max_flips;
+    string S;
+    cin >> length >> max_flips >> S;
+
+    vector <int> zero_segments;
+    get_value(zero_segments, S, '0');
+
+    vector <int> one_segments;
+    get_value(one_segments, S, '1');
+
+    int max_length = 0, current_0_length = 0, current_1_length = 0, left_segment = 0;
+
+    for(int i = 0; i < zero_segments.size() || i < one_segments.size(); i++)
+    {
+        if(i < zero_segments.size())
+        {
+            current_0_length += zero_segments[i];
+        }
+
+        if(i < one_segments.size())
+        {
+            current_1_length += one_segments[i];
+        }
+
+        if(i >= max_flips)
+        {
+            current_0_length -= zero_segments[left_segment];
+            current_1_length -= one_segments[left_segment];
+
+            left_segment++;
+        }
+
+        int extra = 0;
+
+        if(S[0] == '0' && left_segment != 0)
+        {
+            extra = one_segments[left_segment - 1];
+        }
+
+        if(S[0] == '1' && i + 1 < one_segments.size())
+        {
+            extra = one_segments[i + 1];
+        }
+
+        int current_length = current_0_length + current_1_length + extra;
+
+        max_length = max(max_length, current_length);
+    }
+
+    cout << max_length;
+    return 0;
+}
+
