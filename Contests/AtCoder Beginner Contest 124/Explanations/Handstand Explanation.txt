@@ -1,8 +1,19 @@
-Observation 1 - It is always best to flip a whole segment of 0s. 
+Observation 1 - It is always best to flip a whole segment of 0s. In other words, in one operation, we must touch a whole segment of 0s.
 
-If we flip less than an entire segment of 0s, we can always get more 1s by flipping the entire segment. 
+If we flip less than an entire segment of 0s, we can always get more 1s by flipping the entire segment of 0s. 
 
-Suppose we flip more than one segment of 0s, then our answer cannot be more than it would be by flipping the largest segment of 0s that we have flipped. The segments of 1s become 0s and the length of the largest continuous segment cannot increase. 
+Suppose we flip more than one 0-segment, then our answer cannot be more than it would be by flipping the largest 0-segment that we have flipped. 
+If 2 0-segments were disjoint initially, they will remain disjoin even after we perform the operation because the dividing 1-segment
+becomes a 0-segment.
+
+Hence, in one operation, it is always optimal to touch exactly one 0-segment completely.
+
+-----
+
+When we perform K operations, we must flip K consecutive 0-segments. 
+
+We will check the number of 1s we can get if we flip every set of consecutive K 0-segments and then choose the one which maximises 
+number of 1s.
 
 -----
 
