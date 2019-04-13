@@ -55,7 +55,7 @@ Then when we are taking the sum of the segment from [L, R], we need to add O[L -
 Suppose the first segment is of 1s. 
 Then O[1] comes before Z[1], O[2] before Z[2] and O[i] before Z[i]. 
 
-When we want the segment length of continuous 0s on flipping [L, R], we need to add O[R + 1] seperately. 
+When we want the segment length of continuous 1s on flipping [L, R], we need to add O[R + 1] seperately as an extra. 
 
 ---
 
