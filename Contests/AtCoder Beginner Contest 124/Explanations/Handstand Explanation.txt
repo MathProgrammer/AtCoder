@@ -43,7 +43,7 @@ or
 
 2. O[L - 1] + Z[L] + O[L] + ... + O[R - 1] + Z[R] + O[R] + Z[R]
 
-(We will add either O[L - 1] or O[R + 1] but not both. Remember there have to be K + 1 segments of 1s. Not more)
+(We will add either O[L - 1] or O[R + 1] but not both. Remember there have to be K + 1 1-segments. Not more)
 
 ---
 
