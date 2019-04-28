@@ -1,0 +1,37 @@
+We can always ensure that the number of negative elements remaining in the end is at most 1. 
+
+In one operation, we can reduce the number of negative elments by either 0 or 2. So, if there were an odd number of negative elements in the beginning, there will always be at least one negative element.
+
+So, we will ensure that the minimum element is negative. 
+
+-----
+
+int main()
+{
+    int no_of_elements;
+    cin >> no_of_elements;
+
+    vector <int> A(no_of_elements + 1);
+    for(int i = 1; i <= no_of_elements; i++)
+        cin >> A[i];
+
+    const int oo = 1e9;
+    int negative_count = 0, minimum_element = oo;
+    long long sum = 0;
+    for(int i = 1; i <= no_of_elements; i++)
+    {
+        sum += abs(A[i]);
+
+        negative_count += (A[i] < 0);
+
+        minimum_element = min(minimum_element, abs(A[i]));
+    }
+
+    if(negative_count%2 == 1)
+    {
+        sum -= 2*minimum_element;
+    }
+
+    cout << sum;
+    return 0;
+}
