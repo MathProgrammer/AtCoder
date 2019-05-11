@@ -1,0 +1,17 @@
+If we pick out K integers that are consecutive, it can be 
+[1, K], [2, K + 1], ... , [N - K + 1, N]
+
+So there are N - K + 1 ways of choosing it. 
+
+---
+
+int main()
+{
+    int n, k;
+    cin >> n >> k;
+
+    int no_of_choices = n - (k - 1);
+    cout << no_of_choices;
+
+    return 0;
+}
