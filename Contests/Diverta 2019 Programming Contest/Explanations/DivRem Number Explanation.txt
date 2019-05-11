@@ -1,5 +1,13 @@
 Blog Link - https://qr.ae/TWIjfz
 
+According to the division algorithm, N = qm + r, 
+
+If q = r, then N = qm + q = q(m + 1). 
+
+If m satisfies the condition that q = r, then (m + 1) must be a divisor of N. 
+
+Check all the divisors of N to see if they satisfy that condition.
+
 ---
 
 int are_remainder_and_quotient_equal(LL n, LL m)
