@@ -1,0 +1,39 @@
+If we remove element A[i] from the array, what will the GCD be ? 
+
+An easy way to express this is that it will be GCD(A[1], ... , A[i - 1], A[i + 1], A[i + 2], ... , A[n])
+
+= gcd(gcd(A[1], ... , A[i - 1]), gcd(A[i + 1], ... , A[n]))
+
+So we will just maintain prefix GCDs and suffix GCDs !
+
+---
+
+int main()
+{
+    int no_of_elements;
+    cin >> no_of_elements;
+
+    vector <int> A(no_of_elements + 1);
+    for(int i = 1; i <= no_of_elements; i++)
+        cin >> A[i];
+
+    vector <int> prefix_gcd(no_of_elements + 1, 0);
+    for(int i = 1; i <= no_of_elements; i++)
+        prefix_gcd[i] = __gcd(prefix_gcd[i - 1], A[i]);
+
+    vector <int> suffix_gcd(no_of_elements + 2, 0);
+    for(int i = no_of_elements; i >= 1; i--)
+        suffix_gcd[i] = __gcd(suffix_gcd[i + 1], A[i]);
+
+    int best_gcd = 0;
+    for(int i = 1; i <= no_of_elements; i++)
+    {
+        int gcd_without_this = __gcd(prefix_gcd[i - 1], suffix_gcd[i + 1]);
+
+        best_gcd = max(best_gcd, gcd_without_this);
+    }
+
+    cout << best_gcd;
+
+    return 0;
+}
