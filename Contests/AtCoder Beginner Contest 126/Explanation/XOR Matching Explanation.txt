@@ -1,0 +1,81 @@
+Firstly, we cannot reach any xor >= 2^M. 
+
+Since the m-th bit is not set in any of the numbers.
+
+So if k >= 2^m, we will simply say it is not possible.
+
+---
+
+Fact - The XOR of (1, n) = 0, if n is a multiple of 4. 
+
+All powers of 2 except 1, 2 are multiples of 4. 
+
+The following constructive solution works if k >= 2
+
+We will print all numbers except K
+Then K, 
+Then print the same integers in reverse order
+And then K
+
+[A K A' K]
+
+A = {0, 1, ... , 2^M - 1} without K
+
+---
+
+If we consider the XOR between any pair (i, i), every integer except K will cancel out. 
+
+If we consider the XOR between (K, K), then it is K XOR (0, 1, ...2^M - 1, K) = K xor 0 = K
+
+---
+
+This works when m >= 2. What happens when k = 0 or k = 1
+
+When m = 0, only one possibility is there - 0 0 
+
+When m = 1, that is the only special case. 
+
+We can only reach 0, we cannot reach 1. 
+
+---
+
+int main()
+{
+    int n, target_xor;
+    cin >> n >> target_xor;
+
+    if(target_xor == 0 && n == 0)
+    {
+        cout << "0 0";
+
+        return 0;
+    }
+
+    if(target_xor == 0 && n == 1)
+    {
+        cout << " 0 0 1 1";
+
+        return 0;
+    }
+
+    if(n <= 1 || target_xor >= (1 << n))
+    {
+        cout << "-1";
+
+        return 0;
+    }
+
+    for(int i = 0; i < (1 << n); i++)
+        if(i != target_xor)
+            cout << i << " ";
+
+    cout << target_xor << " ";
+
+    for(int i = (1 << n) - 1; i >= 0; i--)
+        if(i != target_xor)
+            cout << i << " ";
+
+    cout << target_xor << " ";
+
+    return 0;
+}
