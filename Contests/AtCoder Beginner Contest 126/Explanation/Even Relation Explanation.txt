@@ -1,0 +1,70 @@
+Firstly, we will root the tree on some vertex which only has one edge. 
+
+Let f(i) denote the total weight from the root till vertex i. 
+
+We can calulate this with a simple DFS - 
+
+---
+
+void dfs(int v, int parent)
+{
+    for(int i = 0; i < tree[v].size(); i++)
+    {
+        int child = tree[v][i].destination;
+        long long child_weight = tree[v][i].weight;
+
+        if(child != parent)
+        {
+            weight_till[child] = child_weight + weight_till[v];
+
+            dfs(child, v);
+        }
+    }
+}
+
+---
+
+We will colour all vertices of the same parity of f(i) with the same colour. 
+
+There is a very nice proof for this. 
+
+Let w be the LCA of u and v. 
+
+Then the distance between u and v is given by f(u) + f(v) - 2f(uv)
+
+Since 2f(uv) is even, we can ignore it. 
+
+If f(u) and f(v) have the same parity, then their distance will be even. 
+Else, it will be odd. 
+
+---
+
+int main()
+{
+    int no_of_vertices;
+    cin >> no_of_vertices;
+
+    int no_of_edges = no_of_vertices - 1;
+    for(int i = 1; i <= no_of_edges    ; i++)
+    {
+        int u, v, weight;
+        cin >> u >> v >> weight;
+
+        tree[u].push_back(edge(v, weight));
+        tree[v].push_back(edge(u, weight));
+    }
+
+    int root;
+    for(int i = 1; i <= no_of_vertices; i++)
+        if(tree[i].size() == 1)
+            root = i;
+
+    weight_till[root] = 0;
+    dfs(root, 0);
+
+    for(int i = 1; i <= no_of_vertices; i++)
+        cout << weight_till[i]%2 << endl;
+
+    return 0;
+}
+

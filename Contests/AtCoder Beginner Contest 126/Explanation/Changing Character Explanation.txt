@@ -1,0 +1,22 @@
+The difference between capital character and the lower case character in ASCII is simply ('a' - 'A'). 
+
+We will just add this to S[k]. 
+
+---
+
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+int main()
+{
+    int length, k;
+    string S;
+    cin >> length >> k >> S;
+
+    S[k - 1] += ('a' - 'A');
+
+    cout << S;
+    return 0;
+}
