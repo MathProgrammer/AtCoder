@@ -1,0 +1,63 @@
+Let us construct a graph in between every pair of (X, Y) given. 
+
+So let us say three elements are connected like this - 
+
+1 -> 2 -> 3
+
+If we know A[X] + A[Y] + Z is even 
+
+We know that A[X] + A[Y] = Z (mod 2)
+
+If A[x] and A[Y] have the same parity, then they are both 1. 
+Else one of them is 1 and the other is 2. 
+
+----
+
+After we construct a graph, we will have some connected components. If we know the value of one vertex in the component, we can infer the value of the remaining vertices. 
+
+The number of questions is equal to the number of connected components in the graph. 
+
+---
+
+void dfs(int v, int parent_v, int component_no)
+{
+    component[v] = component_no;
+
+    for(int i = 0; i < graph[v].size(); i++)
+    {
+        int child_v = graph[v][i];
+
+        if(parent_v == child_v || component[child_v] != 0) continue;
+
+        dfs(child_v, v, component_no);
+    }
+}
+
+int main()
+{
+    int no_of_vertices, no_of_edges;
+    cin >> no_of_vertices >> no_of_edges;
+
+    for(int i = 1; i <= no_of_edges; i++)
+    {
+        int u, v, z;
+        cin >> u >> v >> z;
+
+        graph[u].push_back(v);
+        graph[v].push_back(u);
+    }
+
+    int no_of_components = 0;
+    for(int i = 1; i <= no_of_vertices; i++)
+    {
+        if(component[i] == 0)
+        {
+            no_of_components++;
+
+            dfs(i, 0, no_of_components);
+        }
+    }
+
+    cout << no_of_components;
+    return 0;
+}
