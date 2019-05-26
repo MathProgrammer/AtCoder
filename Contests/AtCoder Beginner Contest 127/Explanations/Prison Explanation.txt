@@ -1,0 +1,30 @@
+Let us look at the line with the largest left L and the smallest right R. 
+
+If R < L, then lines are disjoint and there is no point which passes through all lines. 
+
+Otherwise, the answer is R - (L - 1) since these points are guaranteed to fall in all lines. 
+
+---
+
+int main()
+{
+    int no_of_cards, no_of_lines;
+    cin >> no_of_cards >> no_of_lines;
+
+    const int oo = 1e9 + 9;
+    int largest_left = -oo, smallest_right = oo;
+
+    for(int i = 1; i <= no_of_lines; i++)
+    {
+        int left, right;
+        cin >> left >> right;
+
+        largest_left = max(largest_left, left);
+        smallest_right = min(smallest_right, right);
+    }
+
+    int covered_length = (smallest_right < largest_left ? 0 : smallest_right - (largest_left - 1));
+
+    cout << covered_length;
+    return 0;
+}
