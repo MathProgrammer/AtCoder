@@ -1,0 +1,126 @@
+First of all the B's are independent of x. So f(x) will always include the sum of all Bs till that point as it is constant. 
+
+---
+
+Secondly, now let us see how we will answer the following question - 
+
+Given A1, A2, ... , An, find x to minimise 
+
+f(x) = |x - A1| + |x - A2| + ... + |x - An|
+
+---
+
+This is a well known question and the answer is the median of the x's. 
+
+It is quite easy to find out the median of all the As at any given point in time, but how do we actually evaluate f(x) quickly at x = Median ? 
+
+---
+
+Let us divide it into two halves - 
+
+Case 1 - All As less than the median -
+
+(X - A1) + (X - A2) + ... + (X - Am)
+
+Case 2 - All As larger than the median - 
+
+(A_(m + 1) - X) + ... + (An - X)
+
+Let us maintain two arrays for both these halves and have the running sums of both. 
+
+We can find out the both sums very easily. 
+
+---
+
+Now, the only question is how do we handle inserts ? 
+
+Suppose we are maintaining two arrays A1 and A2. 
+
+Let A1 have all elements smaller than the median and let A2 have all elements greater than the median. 
+
+Let the current element to be inserted be a. 
+
+If a is smaller than the largest element in A1, then insert a into A1. 
+Else insert a in A2. 
+
+---
+
+After that check if the size of A1 > size of A2 + 1, 
+
+If yes, then keep moving the maximum element of A1 into A2. 
+
+This maintains our invariant that A1 has everything <= Median
+And A2 has everything >= Median. 
+
+---
+
+After that check if the size of A2 > size of A1
+
+If yes, keep moving the minimum element of A2 into A1. 
+
+---
+
+To do this quickly, we will maintain A1 as a maximum priority queue and A2 as a minimum priority queue. 
+
+Each query can be answered in O(log Q) time. 
+
+---
+
+long long b_sum = 0, median = 0, a_sum_below_median = 0, a_sum_above_median = 0;
+priority_queue <int> below_median;
+priority_queue <int, vector <int>, greater <int> > above_median;
+
+void answer()
+{
+    int query_type;
+    cin >> query_type;
+
+    const int INSERT = 1, GET_MINIMUM = 2;
+    if(query_type == INSERT)
+    {
+        int a, b;
+        cin >> a >> b;
+
+        b_sum += b;
+
+        if(below_median.empty() || a < below_median.top())
+        {
+            below_median.push(a);
+            a_sum_below_median += a;
+        }
+        else
+        {
+            above_median.push(a);
+            a_sum_above_median += a;
+        }
+
+        while(below_median.size() > above_median.size() + 1)
+        {
+            int x = below_median.top();
+            below_median.pop();
+            above_median.push(x);
+
+            a_sum_below_median -= x;
+            a_sum_above_median += x;
+        }
+
+        while(above_median.size() > below_median.size())
+        {
+            int x = above_median.top();
+            above_median.pop();
+            below_median.push(x);
+
+            a_sum_above_median -= x;
+            a_sum_below_median += x;
+        }
+    }
+    else if(query_type == GET_MINIMUM)
+    {
+        long long median = below_median.top();
+        long long elements_below_median = below_median.size(), elements_above_median = above_median.size();
+
+        long long minimum_value = (median*elements_below_median - a_sum_below_median) + (a_sum_above_median - median*elements_above_median) + b_sum;
+
+        cout << median << " " << minimum_value << endl;
+    }
+}
