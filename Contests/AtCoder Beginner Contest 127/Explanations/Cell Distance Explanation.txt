@@ -1,0 +1,85 @@
+Let us find out how many times a given pair will be counted ? 
+
+If we fix two cells A and B, then from the remaining (NM - 2) cells, we have to choose 2 cells. 
+
+So each pair will be counted C(NM - 2, K - 2) times. 
+
+So the answer is C(NM - 2, K - 2) x (Sum of pair sums). 
+
+---
+
+Now how do we find out the sum of all the pair sums in better than O(N^2) time ?
+
+Let us answer the question independently for the X and the Y. 
+
+Let us take some xi, x1 <= x2 <= .... <= xi <= ... <= xn
+
+Now, how much does a given xi contribute with anything smaller than it ? +xi. 
+How many smaller values are there ? (i - 1)
+So the contribution of xi with all x < xi is 
+
+(i - 1)xi
+
+However, there are M occurences of each of the X's. 
+
+Hence there are M x M ways of choosing a (x, xi) pair. 
+
+Total contribution = M^2 (i - 1) xi
+
+Similarly, total contribution with greater elements 
+= - M^2 (N - 1) xi
+
+So, the total contribution for an xi = M^2 xi [(i - 1) - (n - i)]
+
+We can sum over this to calculate the total contribution of all the X.
+
+---
+
+Similarly, for yi it is = N^2 yi [(i - 1) - (m - i)]
+
+We can sum over this to calculate the total contribution of all the Ys.
+
+---
+
+Please note that it is possible to reduce the sums further so that they can be evaluated in O(1) time, but it is not necessary here. 
+
+(Please refer my 'rough notes' for further reference.)
+
+---
+
+int main()
+{
+    precompute_factorial();
+
+    long long rows, columns, k;
+    cin >> rows >> columns >> k;
+
+    long long no_of_times_each_pair_is_counted = combinations(rows*columns - 2, k - 2);
+
+    long long x_contribution = 0;
+    for(int i = 1; i <= rows; i++)
+    {
+        long long x = i;
+
+        long long one_x_contribution = (columns*(i - 1)*x - columns*(rows - i)*x + MOD)%MOD;
+
+        x_contribution += (columns*one_x_contribution)%MOD;
+    }
+
+    long long y_contribution = 0;
+    for(int i = 1; i <= columns; i++)
+    {
+        long long y = i;
+
+        long long one_y_contribution = (rows*(i - 1)*y - rows*(columns - i)*y + MOD)%MOD;
+
+        y_contribution += (rows*one_y_contribution)%MOD;
+    }
+
+    long long sum_pair_distance = (x_contribution + y_contribution)%MOD;
+
+    long long answer = (no_of_times_each_pair_is_counted*sum_pair_distance)%MOD;
+
+    cout << answer;
+    return 0;
+}
