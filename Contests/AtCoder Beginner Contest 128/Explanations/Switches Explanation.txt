@@ -1,0 +1,85 @@
+The constraints are extremely small. 
+
+Let us visit every possible combination of which switches are on. There are at most 2^{10} combinations = 1024 so there aren't many. 
+
+Let us construct a bijection in between a bitmask of length N and which switches are on. 
+
+The mask - 000101 indicates that the 3rd and 6th switches are on and all other switches are off. 
+
+Similarly, 000000 indicates everything is off and 111111 indicates everything is on. 
+
+---
+
+When we are at a particular combination, we will check how many switches are on. 
+
+How do we do this ? 
+
+We will iterate over every single bulb and count how many switches connected to it are ON. Then, we will check if it is the desired parity. 
+
+---
+
+If even one bulb is not in the desired parity state, we will break. Else, we will continue.
+
+int all_bulbs_on()
+{
+    for(int i = 1; i <= no_of_bulbs; i++)
+    {
+        int no_of_on_switches = 0;
+
+        for(int j = 0; j < switches_connected_to[i].size(); j++)
+        {
+            int current_switch = switches_connected_to[i][j];
+
+            no_of_on_switches += switch_on[current_switch];
+        }
+
+        if(no_of_on_switches%2 != state_for_bulb_to_be_on[i])
+            return false;
+    }
+
+    return true;
+}
+
+---
+
+Here is how we visit every combination - 
+
+int main()
+{
+    cin >> no_of_switches >> no_of_bulbs;
+
+    for(int i = 1; i <= no_of_bulbs; i++)
+    {
+        int no_of_switches_here;
+        cin >> no_of_switches_here;
+
+        for(int j = 1; j <= no_of_switches_here; j++)
+        {
+            int switch_here;
+            cin >> switch_here;
+
+            switches_connected_to[i].push_back(switch_here);
+        }
+    }
+
+    for(int i = 1; i <= no_of_bulbs; i++)
+        cin >> state_for_bulb_to_be_on[i];
+
+    int no_of_combinations = 0;
+
+    const int MAX_MASK = (1 << no_of_switches);
+    for(int mask = 0; mask < MAX_MASK; mask++)
+    {
+        for(int i = 0; i < no_of_switches; i++)
+        {
+            switch_on[i + 1] = (is_bit_set(mask, i) ? true : false);
+        }
+
+        if(all_bulbs_on())
+            no_of_combinations++;
+    }
+
+    cout << no_of_combinations;
+    return 0;
+}
+
