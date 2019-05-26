@@ -1,0 +1,101 @@
+First of all, the constraints are very small. 
+
+O(N^3) or O(N^2 K) or O(N^2 K log K) will pass. 
+
+---
+
+The main observation is that in every set of possible operations - 
+
+
+1. Some prefix is deleted
+2. Some suffix is deleted
+3. From the deleted elements, some elements are put back in the array. 
+
+How to do this in the optimal way ? 
+
+---
+
+We will 
+
+1. Delete some prefix
+2. Delete some suffix
+3. We will try to put back the negative deleted elements in the array. 
+
+Let us fix all pairs [L, R]. 
+
+This is in O(N^2). 
+
+Then we will iterate over A[1, ... , L - 1] and A[R + 1, ... , N]
+
+and insert all these elements into a priority queue. 
+
+Then, we will try to put the negative elements back into the array. 
+
+If we can't put all the negative elments in our hand back into the array, we will put the 'largest' negative elements back into the array. 
+
+Of course, we must take care that the number of operations we use does not exceed K. 
+
+---
+
+For each of the N^2 ways of fixing a prefix and suffix, we will insert at a most K elements into the priority queue. 
+
+So complexity is O(N^2 K log K)
+
+---
+
+int main()
+{
+    int no_of_elements, max_operations;
+    cin >> no_of_elements >> max_operations;
+
+    vector <int> A(no_of_elements + 2, 0);
+    for(int i = 1; i <= no_of_elements; i++)
+        cin >> A[i];
+
+    vector <int> sum(no_of_elements + 1, 0);
+    for(int i = 1; i <= no_of_elements; i++)
+        sum[i] += A[i];
+
+    int max_sum = 0;
+    for(int left = 0; left <= no_of_elements; left++)
+    {
+        for(int right = left; right <= no_of_elements; right++)
+        {
+            int removed_elements =  max(0, left - 1) + (no_of_elements - right);
+
+            if(removed_elements > max_operations)
+            {
+                continue;
+            }
+
+            int sum_now = 0;
+            priority_queue <int, vector <int>, greater <int> > Q;
+            for(int i = 1; i < left; i++)
+            {
+                sum_now += A[i];
+                Q.push(A[i]);
+            }
+
+            for(int i = right + 1; i <= no_of_elements; i++)
+            {
+                sum_now += A[i];
+                Q.push(A[i]);
+            }
+
+            int remaining_operations = max_operations - removed_elements;
+
+            while(remaining_operations > 0 && Q.size() > 0 && Q.top() < 0)
+            {
+                sum_now -= Q.top();
+                Q.pop();
+
+                remaining_operations--;
+            }
+
+            max_sum = max(max_sum, sum_now);
+        }
+    }
+
+    cout << max_sum;
+    return 0;
+}
