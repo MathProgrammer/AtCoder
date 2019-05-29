@@ -1,0 +1,69 @@
+It is very easy for us to compute total[i], patties[i] and buns[i], where they represent the total number of pieces, patties and buns in a burger of height i. 
+
+---
+
+Now, when we are asked to find out the number of patties in a burger of height L, there is a key observation we can make - 
+
+The height X is either - 
+
+1. Reached in the first burger of height (L - 1). 
+2. Contains the entire smaller burger of height (L - 1) and ends in the second burger of height (L - 1). 
+
+This suggests recursion. 
+
+---
+
+Let f(X, L) represent the number of patties in a burger of height L in the first X layers. 
+
+Firstly, if X <= 1, then it is 0 buns. 
+Secondly, if X >= total[L], then we should return the entire patties[L]. 
+
+However, when L = 0 and X = 1, the answer is 1 patty, not 0. However, we do not need to treat this case differently if we first check if X >= total[L] and then check if X >= 1. 
+
+---
+
+After this we will check if X - 1 < total[L - 1], if so we will call f(X - 1, L - 1). 
+
+---
+
+If X - 1 >= total[L - 1], we will add P[L - 1] to the answer. 
+
+Then we will check if X - 1 - total[L - 1] >= 1, as that is the middle patty, if yes, then we will add 1 to the answer. 
+
+Finally, if X - 1 - total[L - 1] - 1 > 0, then we will simply find out the number of patties in the remaining layers in a burger of height L - 1. 
+
+f(X - 1 - total[L - 1] - 1, L - 1)
+
+---
+
+long long no_of_patties(long long height, int level)
+{
+    const int OUTER_BUN = 1, MIDDLE_PATTY = 1;
+
+    if(height >= total[level])
+        return patties[level];
+    if(height == 0 || height == OUTER_BUN)
+        return 0;
+    if(height - OUTER_BUN < total[level - 1])
+        return no_of_patties(height - OUTER_BUN, level - 1);
+
+    height -= OUTER_BUN;
+    long long patties_here = 0;
+
+    if(height >= total[level - 1])
+    {
+        patties_here += patties[level - 1];
+        height -= total[level - 1];
+    }
+    if(height >= MIDDLE_PATTY)
+    {
+        patties_here += MIDDLE_PATTY;
+        height -= MIDDLE_PATTY;
+    }
+    if(height > 0)
+    {
+        patties_here += no_of_patties(height, level - 1);
+    }
+
+    return patties_here;
+}
