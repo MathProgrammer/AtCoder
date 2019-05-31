@@ -1,0 +1,84 @@
+Let us see when XOR(A1, A2, A3... ) = SUM(A1, A2, A3... ) ?
+
+Let us write down all the numbers in their binary representation. 
+
+Clearly any column with all 0s will be the same. 
+
+Let us look at the first column with some 1s in it. 
+
+---
+
+Case 1 - There is exactly one 1 in this column. 
+
+This this case, the sum and xor will be equal.
+
+Case 2 - There are an odd number of 1s in this column. (More than one 1). 
+
+In this case, this particular column will have same xor and sum. 
+However there will be a carry to the next column. 
+The carry will change the parity of the next column and hence the number. 
+
+Case 3 - There are an even number of 1s in this column. 
+
+There will be a carry and by the same reasoning as Case 2, the next clumn will not be equal
+
+---
+
+The XOR and Sum can be equal if each column has at most one bit set. 
+
+We can do this by using a sliding window. 
+
+First L = 1. 
+
+Then we will keep R as large as possible such that [L, R] has at most one bit set in every position. The number of such intervals will increase by |L, R|.
+
+Then, we will increase L by 1. 
+
+Now, we do not need to start R from L + 1, 
+
+We already know that [L + 1, R] is a good interval. So now we will increment R till the invariant [L + 1, R] is a good interval is maintained and R <= N. 
+
+Every element is visited at most twice. So the complexity is O(n).
+
+The reason I never check L < R is because any one element interval is always good. 
+
+---
+
+int main()
+{
+    int no_of_elements;
+    cin >> no_of_elements;
+
+    vector <int> A(no_of_elements + 1);
+    for(int i = 1; i <= no_of_elements; i++)
+        cin >> A[i];
+
+    int left = 0, right = 0;
+    long long good_subarrays = 0;
+
+    while(left < no_of_elements)
+    {
+        take_out(A[left]);
+        left++;
+
+        while(right < no_of_elements)
+        {
+            right++;
+            add(A[right]);
+
+            if(!at_most_one_bit_set())
+            {
+                take_out(A[right]);
+
+                right--;
+
+                break;
+            }
+        }
+
+        good_subarrays += (right - (left - 1));
+    }
+
+    cout << good_subarrays;
+    return 0;
+}
