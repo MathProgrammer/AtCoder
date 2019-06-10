@@ -1,0 +1,34 @@
+Quora Link - https://qr.ae/TWh8qY
+
+The main idea is to iterate over prefixes and notice that the (a^b) will have a 0 where L + 1 has a 1 and then it can have anything after that. 
+
+Moreover, it also needs to be considered that if a^b = a + b, then each bit is set in at most one of the numbers. 
+
+---
+
+int main()
+{
+    string L;
+    cin >> L;
+
+    L = add_1_to(L);
+
+    vector <int> no_of_1s_till(L.size(), 0);
+    no_of_1s_till[0] = (L[0] == '1');
+    for(int i = 1; i < L.size(); i++)
+        no_of_1s_till[i] = no_of_1s_till[i - 1] + (L[i] == '1');
+
+    long long no_of_pairs = 0;
+    for(int i = 0; i < L.size(); i++)
+    {
+        if(L[i] == '0')
+            continue;
+
+        no_of_pairs += power_mod(2, no_of_1s_till[i] - 1)*power_mod(3, L.size() - i - 1);
+
+        no_of_pairs %= MOD;
+    }
+
+    cout << no_of_pairs;
+    return 0;
+}
