@@ -1,0 +1,64 @@
+If we place a lamp at (x, y), then we need to know how far the light will go in the directions - 
+
+Left, 
+Right, 
+Up, 
+Down
+
+We cannot calculate this each time however we can precompute it. 
+
+Let left(i, j) represent the distance to the nearest obstacle from (i, j) in the left direction. 
+
+Let right(i, j) represent the nearest obstance distance in the right direction.
+
+Let up(i, j) represent the nearest obstance distance in the upward direction.
+
+Let down(i, j) represent the nearest obstance distance in the downward direction.
+
+We will precompute all of these in the following manner - 
+
+memset(up_obstacle, 0, sizeof(up_obstacle));
+    memset(leftmost_obstacle, 0, sizeof(leftmost_obstacle));
+
+    for(int h = 1; h <= height; h++)
+    {
+        for(int w = 1; w <= width; w++)
+        {
+            leftmost_obstacle[h][w] = (grid[h][w] == '#' ? 0 : leftmost_obstacle[h][w - 1] + 1);
+
+            up_obstacle[h][w] = (grid[h][w] == '#' ? 0 : up_obstacle[h - 1][w] + 1);
+        }
+    }
+
+    memset(rightmost_obstacle, 0, sizeof(rightmost_obstacle));
+    memset(down_obstacle, 0, sizeof(down_obstacle));
+
+    for(int h = height; h >= 1; h--)
+    {
+        for(int w = width; w >= 1; w--)
+        {
+            rightmost_obstacle[h][w] = (grid[h][w] == '#' ? 0 : rightmost_obstacle[h][w + 1] + 1);
+
+            down_obstacle[h][w] = (grid[h][w] == '#' ? 0 : down_obstacle[h + 1][w] + 1);
+        }
+    }
+
+---
+
+The distance the light goes from (x, y) is left(x, y) + right(x, y) + up(x, y) + down(x, y) - 3. 
+
+We have to subtract 3 because the square (x, y) is counted 4 times by each of the DPs and we should count it only once. 
+
+---
+
+int answer = 0;
+    for(int  h = 1; h <= height; h++)
+    {
+        for(int w = 1; w <= width; w++)
+        {
+            if(grid[h][w] == '#')
+                continue;
+
+            answer = max(answer, leftmost_obstacle[h][w] + up_obstacle[h][w] + rightmost_obstacle[h][w] + down_obstacle[h][w] - 3);
+        }
+    }
