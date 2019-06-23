@@ -1,0 +1,31 @@
+Let us sort the events by their deadlines. Events who's deadlines come earlier need to be completed first. 
+
+Keep track of the time consumed at each point and verify if it is before each deadline. 
+
+----
+
+int main()
+{
+    int no_of_events;
+    cin >> no_of_events;
+
+    vector <event> E(no_of_events);
+    for(int i = 0; i < no_of_events; i++)
+    {
+        cin >> E[i].time >> E[i].deadline;
+    }
+
+    sort(all(E));
+
+    int time_now = 0, possible = true;
+    for(int i = 0; i < no_of_events; i++)
+    {
+        time_now += E[i].time;
+
+        if(time_now > E[i].deadline)
+            possible = false;
+    }
+
+    cout << (possible ? "Yes" : "No");
+    return 0;
+}
