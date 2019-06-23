@@ -1,0 +1,33 @@
+Firstly, if L is positive, then it's best to remove the first apple. 
+
+Otherwise, we must look for an apple who's value is 0. 
+
+If that is also not there, then we need to look for an apple with the smallest value which will be L + (N - 1)
+
+---
+
+int main()
+{
+    int N, L;
+    cin >> N >> L;
+
+    int sum = N*L + N*(N + 1)/2 - N;
+    int smallest = 0;
+
+    if(L > 0)
+    {
+        smallest = L;
+    }
+    else
+    {
+        if(N - 1 >= abs(L))
+            smallest = 0;
+        else
+            smallest = L + (N - 1);
+    }
+
+    sum -= smallest;
+
+    cout << sum;
+    return 0;
+}
