@@ -1,0 +1,50 @@
+Firstly, we will give each of the contestants K points. 
+
+We know Q questions were asked.
+
+Processing the questions one by one, and adding -1 to (N - 1) contestants is slow. This takes O(N) time.
+However, giving everyone a -1 in the beginning and only adding +1 to the correct contestant is quick. O(1) time.
+
+Let us give each of our contestants (K - Q) points to begin with. (-1 for each of the Q questions. We give everyone -1 points for all Q questions.)
+
+Then, as we process the answers one by one, we will increase the number of points of the correct contestant by 1 !
+
+----
+
+Although these two methods seem equivalent, - 
+
+1. Give everyone 0 in the beginning. Then given (N - 1) people -1 Q times. 
+
+2. Give everyone -Q in the beginning. Then give only 1 person +1 Q times, 
+
+The second method is much faster as we only take O(1) each time. 
+
+----
+
+#include <iostream>
+#include <vector>
+#include <queue>
+
+using namespace std;
+
+int main()
+{
+    int no_of_players, no_of_points, no_of_answers;
+    cin >> no_of_players >> no_of_points >> no_of_answers;
+
+    vector <int> points(no_of_players + 1, no_of_points - no_of_answers);
+    for(int i = 1; i <= no_of_answers; i++)
+    {
+        int player;
+        cin >> player;
+
+        points[player]++;
+    }
+
+    for(int i = 1; i <= no_of_players; i++)
+    {
+        cout << (points[i] > 0 ? "Yes\n" : "No\n");
+    }
+
+    return 0;
+}
