@@ -1,0 +1,18 @@
+We will simply make a switch-case statement to print the next day's weather given the current day's weather. 
+
+---
+
+int main()
+{
+    string S;
+    cin >> S;
+
+    switch(S[0])
+    {
+        case 'S' : cout << "Cloudy\n"; break;
+        case 'C' : cout << "Rainy\n";  break;
+        case 'R' : cout << "Sunny\n";  break;
+    }
+
+    return 0;
+}

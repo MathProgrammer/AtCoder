@@ -1,0 +1,23 @@
+Firstly, note that U and D can occur anywhere. The only constraint is that L cannot occur in odd positions and R cannot occur in even positions. 
+
+We just have to flip the parities since we are dealing with a 0-indexed string unlike a 1-indexed string like the question 
+
+---
+
+int main()
+{
+    string steps;
+    cin >> steps;
+
+    int easily_playable = true;
+    for(int i = 0; i < steps.size(); i++)
+    {
+        if( ((i%2 == 0) && steps[i] == 'L') || ((i%2 == 1) && steps[i] == 'R') )
+        {
+            easily_playable = false;
+        }
+    }
+
+    cout << (easily_playable ? "Yes\n" : "No\n");
+    return 0;
+}
