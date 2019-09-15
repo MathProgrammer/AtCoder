@@ -1,0 +1,63 @@
+Suppose this was not a programming question and just a general question, what would we do ? 
+
+We would take the most expensive item, and then use one discount ticket on it. 
+
+Then take the item with the highest price again and use another discount ticket on it. 
+
+We would continue to do this until our discount coupons were exhausted. 
+
+-----
+
+We cannot sort the array each time and then divide the highest price by 2. That would be too slow. 
+
+Instead we simply use a priority queue !
+
+Priority queues take O(log N) time to insert and O(1) time to return the greatest element. 
+
+1. We will insert all prices into a priority queue. 
+2. As long as we have discount coupons, we will take out the most expensive price, divide it by 2 and put it back in. 
+
+------
+
+#include <iostream>
+#include <vector>
+#include <queue>
+
+using namespace std;
+
+int main()
+{
+    int no_of_tickets, no_of_discounts;
+    cin >> no_of_tickets >> no_of_discounts;
+
+    priority_queue <int> prices;
+    for(int i = 1; i <= no_of_tickets; i++)
+    {
+        int price;
+        cin >> price;
+
+        prices.push(price);
+    }
+
+    while(no_of_discounts > 0 && prices.top() > 0)
+    {
+        int most_expensive = prices.top();
+
+        prices.pop();
+
+        prices.push(most_expensive/2);
+
+        no_of_discounts--;
+    }
+
+    long long total_price = 0;
+    while(!prices.empty())
+    {
+        total_price += prices.top();
+
+        prices.pop();
+    }
+
+    cout << total_price;
+    return 0;
+}
