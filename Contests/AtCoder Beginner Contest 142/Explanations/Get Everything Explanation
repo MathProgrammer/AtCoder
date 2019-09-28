@@ -45,17 +45,25 @@ f(i, m) = min{ f(i - 1, m), f(i - 1, m^mask[i]) + cost[i]) }
 
 While this appears to be correct, it's not complete. 
 
-The state f(i - 1, m^mask[i]) might not have the optimal value. 
+We need to not only update mask[i] but also every submask of mask[i]. 
 
-For example, if mask[i] = 000110
+For example, suppose the first mask is 011001
 
-If we remove those bits from a given mask. Say M = 001111, 
+The second mask is 011011
 
-Then, we are checking f(i - 1, 001001). This might have a high cost. 
+The third mask is 100110
 
-But, f(i - 1, 001011) might have a lower cost. 
+If we deactivate all 3 bits to find f(3, 111111), then we will be going to f(2, 011001). This is the same as buying the first box. 
 
-Although the result mask is the same = 001111, we might do better going from 001011 than from 001001. 
+If we deactivate only the third bit to find f(3, 111111), then we will be going to f(2, 111011). This is the same as buying the second box. And will be better if the second box is cheaper. 
+
+If the best choice is to buy the first and third box and not the first and second box, this will not be optimal. 
+
+Hence, for mask[i], we will iterate over every single submask S. 
+
+For each submask, we will deactivate the bits and calculate f(i, m) 
+
+-----
 
 This is why we need to iterate over all submasks of mask[i]. 
 
@@ -101,7 +109,7 @@ int main()
             {
                 for(int sub_m = 0; sub_m <= complete_mask; sub_m++)
                 {
-                    if(is_submask(mask[i],sub_m))
+                    if(is_submask(mask[i],sub_m))   
                     {
                         minimum_cost[m] = min(minimum_cost[m], minimum_cost[m^sub_m] + cost[i]);
                     }
