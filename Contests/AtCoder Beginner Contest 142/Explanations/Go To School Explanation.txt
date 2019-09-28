@@ -1,0 +1,32 @@
+We are given the position P[i] of all the i students. 
+
+Let us make another array called Correct[i]
+
+Then, we will do 1 O(n) pass through the array
+
+And set Correct[P[i]] = i
+
+Because i should be present in the P[i]-th position
+
+And then we can print the Correct array in O(n) time
+
+----
+
+int main()
+{
+    int no_of_students;
+    cin >> no_of_students;
+
+    vector <int> position(no_of_students + 1, 0);
+    for(int i = 1; i <= no_of_students; i++)
+        cin >> position[i];
+
+    vector <int> correct_order(no_of_students + 1, 0);
+    for(int i = 1; i <= no_of_students; i++)
+        correct_order[position[i]] = i;
+
+    for(int i = 1; i <= no_of_students; i++)
+        cout << correct_order[i] << " ";
+
+    return 0;
+}
