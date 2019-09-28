@@ -1,0 +1,33 @@
+Let us make a bitmask corresponding to each of the keys. 
+
+If a key can open box i, then we will set the i-th bit in the binary representation of mask[i]. 
+
+There are only 12 boxes, which is what allows us this idea. 
+
+------
+
+Let us use a DP f(i, m). 
+
+Where f(i, m) is the minimum cost it takes to open boxes represented by m using only the first i keys. 
+
+For example, if m = 00110110, then it means that we must be able to open the second, third, fourth and fifth boxes exactly. 
+
+----
+
+Let us try to build a recurrence for this ? 
+
+We have two options for the i-th key. 
+
+----
+
+Case 1 - We do not use it. 
+
+Then, f(i, m) = f(i - 1, m)
+
+This is very straightforward. It's simply the same as doing it until the first (i - 1) keys. 
+
+---
+
+Case 2 - We use the i-th box
+
+Now, here is the first approach that came to my mind. 
