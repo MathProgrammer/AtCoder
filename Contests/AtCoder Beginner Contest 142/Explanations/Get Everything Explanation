@@ -73,6 +73,14 @@ f(i, m) = min{f(i, m), f(i, m^S) + cost[i]}
 
 ------
 
+Of course, f(i, 0) = 0 
+
+Answer is f(n, 111111)
+
+And we are not really refering to the previous i-s so we can eliminate one dimension from the DP to save space
+
+------
+
 int main()
 {
     int no_of_boxes, no_of_keys;
