@@ -1,0 +1,73 @@
+1. I came up with a Digit DP type solution that calculates the weight of each bit position. 
+
+2. For each bit, count the number of times it is set. If it is set an odd number of times, set the bit in the answer. 
+
+3. For calculating the number of set bits in a position, I was using the following pattern - In the bit position 3, There will be (2^3) 0s followed by (2^3) 1s. The bits repeat in blocks of (2^3). Count the number of blocks till n This is x= n/B. 
+
+Now, till these x blocks = xB, there are no set bits as each block cancels itself out completely. 
+
+4. After this, we will check the parity of the remaining bits = n - xB
+
+https://atcoder.jp/contests/abc121/submissions/4635893
+
+------
+
+1. The observation I came up with is a special case of the actual fact. All bits repeat in blocks of 2^i. The key idea is that if a block of 2^i, cancels itself out, then we can split it into 2 blocks of 2^{i - 1}. 
+
+2. We can continue doing this till we get to 2^3 and we break it down to blocks of 2^2. We can't break blocks of 2^2 to blocks of 2^1, because in the very first position, the bits alternate and a given block of size 2^1 will have {0, 1}
+
+3. Anyway, I learnt a beautiful and simple fact that XOR = 0, if (n + 1) is a multiple of 4.
+
+------
+
+#include <iostream>
+
+using namespace std;
+
+typedef long long LL;
+
+void set_bit(LL &n, int position)
+{
+    n |= (1LL << position);
+}
+
+LL no_of_set_bits(LL n, int position)
+{
+    LL set_bits = 0; 
+
+    LL weight = (1LL << position);
+    
+    LL no_of_blocks = (n)/weight; 
+
+    set_bits += (no_of_blocks/2)*weight;
+
+    LL total_reached = no_of_blocks*weight; 
+
+    if(no_of_blocks%2 == 1)
+      set_bits += n - total_reached + 1;
+  
+    return set_bits;
+}
+
+int main()
+{
+    LL left, right;
+    cin >> left >> right;
+
+    LL xor_answer = 0;
+
+    const int MAX_BITS = 63;
+    for(int i = 0; i < MAX_BITS; i++)
+    {
+        LL no_of_set_bits_here = no_of_set_bits(right, i);
+
+      	if(left != 0) 
+          no_of_set_bits_here -= no_of_set_bits(left - 1, i);
+      
+        if(no_of_set_bits_here%2 == 1)
+            set_bit(xor_answer, i);
+    }
+
+    cout << xor_answer;
+    return 0;
+}
