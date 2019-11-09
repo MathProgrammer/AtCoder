@@ -1,0 +1,68 @@
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+int main()
+{
+    int length, no_of_moves;
+    string S;
+    cin >>  length >> no_of_moves >> S;
+
+    int current_length = 0;
+    vector <int> segment_lengths;
+    for(int i = 0; i < length; i++)
+    {
+        if(i == 0 || S[i] == S[i - 1])
+        {
+            current_length++;
+        }
+        else
+        {
+            segment_lengths.push_back(current_length);
+
+            current_length = 1;
+        }
+    }
+
+    segment_lengths.push_back(current_length); //Pushing the last segment
+
+    vector <int> happiness_till(segment_lengths.size(), 0);
+    happiness_till[0] = segment_lengths[0] - 1;
+    for(int i = 1; i < segment_lengths.size(); i++)
+        happiness_till[i] = happiness_till[i - 1] + segment_lengths[i] - 1;
+
+    vector <int> happiness_from(segment_lengths.size(), 0);
+    happiness_from[segment_lengths.size() - 1] = segment_lengths[segment_lengths.size() - 1] - 1;
+    for(int i = segment_lengths.size() - 2; i > 0; i--)
+        happiness_from[i] = happiness_from[i + 1] + segment_lengths[i] - 1;
+
+    int segment_length = 2*no_of_moves + 1;
+    int sum_here = 0, best_sum = 0, remaining_happiness = 0;
+
+    for(int i = 0; i < segment_lengths.size(); i++)
+    {
+        if(i < segment_length)
+        {
+            sum_here += segment_lengths[i];
+        }
+        else
+        {
+            sum_here += segment_lengths[i] - segment_lengths[i - segment_length];
+        }
+
+        remaining_happiness = 0;
+
+        if(i - segment_length - 1 >= 0)
+            remaining_happiness += happiness_till[i - segment_length - 1];
+
+        if(i + 1 < segment_lengths.size())
+            remaining_happiness += happiness_from[i + 1];
+
+        best_sum = max(best_sum, sum_here - 1 + remaining_happiness);
+    }
+
+    cout << best_sum;
+    return 0;
+}
