@@ -1,0 +1,47 @@
+Firstly, the constraints are too big to do a DP. 
+
+1. Let us notice the sum (i, j) (mod 3) is an invariant at each step. 
+
+Initially it is 0. So, if (X + Y) = 0 (mod 3), we can reach (X, Y). Otherwise, no.
+
+2. Now, let us suppose that we make R moves of the kind (i + 1, j + 2) and D moves of the kind (i + 2, j + 1). 
+
+Then, 
+
+R + 2D = X
+2R + D = Y
+
+Since we know the values of X and Y, let us try to write (D, R) in terms of (X, Y)
+
+2X - Y = 3D
+2Y - X = 3R
+
+3. Now that we know the values of (D, R), we need to count the number of strings of length (D + R) with D d's and R r's. This string is uniquely determined by the placement of the d's or the r's. 
+
+So, the answer = C(D + R, D) = C(D + R, R)
+
+Or course, both D and R have to be > 0
+
+-----
+
+int main()
+{
+    int X, Y;
+    cin >> X >> Y;
+
+    if( (X + Y)%3 != 0)
+    {
+        cout << "0\n";
+
+        return 0;
+    }
+
+    long long D = (2*Y - X)/3;
+    long long L = (2*X - Y)/3;
+
+    const int MOD = 1e9 + 7;
+    cout << ( (D < 0 || L < 0) ? 0 : combinations(D + L, D, MOD) );
+
+    return 0;
+}
+
