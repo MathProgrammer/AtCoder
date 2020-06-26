@@ -1,0 +1,24 @@
+In this we need to output A if the character inputted is in uppercase
+otherwise we need to output a(i.e., if the inputted character is in lower case).
+
+So, what I did here is that I use isupper function which checks whether the inputted character is in uppercase
+or not if so output the desired output(i.e., A) otherwise output a.
+
+
+
+----------------------------------------------------------------
+
+
+
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+    char c;						// c is character variable
+    cin>>c;						// Take the input
+    if(isupper(c))				// Check if the value is in uppercase or not
+    cout<<'A'<<endl;			// If the condition holds true output A
+    else
+    cout<<'a'<<endl;			// If the condition is false then output a
+    return 0;
+}

@@ -1,0 +1,27 @@
+In this problem we have given the prices of N types of fruits and we need to choose K types of food
+such that they cost minimum possible.
+
+So, here we need to do sort the array so that we got prices in ascending order. Since we need to bought K kinds of
+fruits, so sum up first K prices and we got needed output.
+
+
+
+----------------------------------------
+
+
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int n,k;						// n is the kind of foods and k is the kind of food we need to choose such that the condition holds
+    cin>>n>>k;						// Input take place
+    int price[n+1];						// Array for the price
+    for(int i=0;i<n;i++)
+    cin>>price[i];
+    sort(price,price+n);			// Sort the array
+    int sum=0;						// Take sum and intialize it to zero
+    for(int i=0;i<k;i++)
+    sum+=price[i];						// Sum of first k kind of foods that costs minimum possible
+    cout<<sum<<endl;				// Output the answer
+    return 0;
+}
