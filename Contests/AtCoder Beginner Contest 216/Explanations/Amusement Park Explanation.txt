@@ -1,0 +1,107 @@
+Let us suppose the largest element now is X and that the second largest is Y. 
+
+Suppose Frequency[X] = d 
+We will Choose integers in the following way 
+
+X, X, X, ... X (d times) 
+X - 1, X - 1, ... X - 1 (d times) 
+X - 2, X - 2, ... X - 2 (d times) 
+
+So, we will choose the largest element at each step and we have d copies of it. 
+This changes once X = Y 
+
+-----
+
+Case 1 - K >= d(X - Y) 
+
+In this case, we will sum the entire range 
+
+Score += d*Sum(Y + 1, X) 
+K -= d(X - Y)
+
+Frequency[Y] += X 
+
+-----
+
+Case 2 - K < d(X - Y) 
+
+We will take d copies of the largest element, as many times as we can and then take (K mod d) copies. 
+
+Suppose, K = Qd + R, by the division algorithm. 
+
+If d = 10 and K = 55, 
+55 = 5(10) + 5
+Q = 5, R = 5 
+
+We wil do 5(X + (X - 1) + ... + (X - Q + 1)) and then R copies of (X - Q)
+
+Overall, we will take 
+
+Score += d*Sum(X - Q + 1, X) + R*(X - Q)
+K -= (d*(X - Q)  + R) => K = 0
+
+-----
+
+long long sum(long long left, long long right)
+{
+    if(left == 0)
+    {
+        return (right*(right + 1))/2;
+    }
+
+    return sum(0, right) - sum(0, left - 1);
+}
+
+int main()
+{
+    long long no_of_elements, k;
+    cin >> no_of_elements >> k;
+
+    vector <long long> A(no_of_elements + 1);
+    for(int i = 1; i <= no_of_elements; i++)
+    {
+        cin >> A[i];
+    }
+
+    priority_queue <long long> Q;
+    Q.push(0);
+    map <int, long long> frequency;
+    for(int i = 1; i <= no_of_elements; i++)
+    {
+        frequency[A[i]]++;
+
+        if(frequency[A[i]] == 1)
+        {
+            Q.push(A[i]);
+        }
+    }
+
+    long long score = 0;
+    while(Q.top() > 0 && k > 0)
+    {
+        long long x = Q.top();
+        Q.pop();
+
+        long long next = Q.top();
+
+        if(k >= frequency[x]*(x - next) )
+        {
+            score += frequency[x]*sum(next + 1, x);
+            frequency[next] += frequency[x];
+
+            k -= frequency[x]*(x - next);
+        }
+        else
+        {
+            long long quotient = k/frequency[x], remainder = k%frequency[x];
+
+            score += frequency[x]*(sum(x - quotient + 1, x));
+            score += remainder*(x - quotient);
+
+            k = 0;
+        }
+    }
+
+    cout << score << "\n";
+    return 0;
+}
