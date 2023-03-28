@@ -1,6 +1,6 @@
 Blog Link - https://www.quora.com/What-is-the-solution-to-Equals-ABC097_D-on-AtCoder/answer/Saikat-Ghosh-183
-Draw an edge in between every pair o
-f points given. 
+
+Draw an edge in between every pair of points given. 
 
 An element p[i] can be put in it's correct place if i and p[i] belong to the same connected component of the graph.
 
