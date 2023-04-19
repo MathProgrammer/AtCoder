@@ -1,0 +1,125 @@
+Sometimes when we are unable to solve a problem on a tree, we should ask ourselves how to solve it on an array. 
+
+There is a DP way to solve this on an array where f(i) is the number of ways 
+
+-----
+
+Let us first discuss how to find LIS on an array 
+
+We will maintain a DP where f(i) is the minimum element that can end a sequence of length i. 
+
+f(i) = oo, if there is no sequence of length i possible. 
+
+While processing a new element x, we will look for the first i, such that f(i) >= i and then set f(i) = x 
+
+We can do this with binary search to find the LIS in O(N log N)
+
+-----
+
+We will ensure that at each point in time, only those vertices are considered which are on the path from 1 to V. 
+
+When we enter a vertex, we will push it into the stack and when we leave it in DFS, we will remove it on the stack. 
+
+We have to be able to undo our change to the DP array when we leave a vertex. 
+In order to do this, we need to keep track of it's previous states. 
+
+We can do this by making dp(i) a stack rather than a single integer. 
+When we leave a vertex, we simply pop it from the best dp position for vertex v
+
+We have to modify the binary searches to function over an array of stacks rather than an array of integers
+
+-----
+
+int find_first_greater(int n)
+{
+    int left = 0, right = MAX_N - 1;
+
+    //L < x <= R
+    while(right - left > 1)
+    {
+        int mid = (left + right)/2;
+
+        if(minimum_ending_of_length[mid].size() == 0 || minimum_ending_of_length[mid].top() >= n)
+        {
+            right = mid;
+        }
+        else
+        {
+            left = mid;
+        }
+    }
+
+    return right;
+}
+
+int find_LIS()
+{
+    int left = 0, right = MAX_N - 1;
+
+    //L <= x < R
+    while(right - left > 1)
+    {
+        int mid = (left + right)/2;
+
+        if(minimum_ending_of_length[mid].size() > 0)
+        {
+            left = mid;
+        }
+        else
+        {
+            right = mid;
+        }
+    }
+
+    return left;
+}
+
+void dfs(int v, int parent_v)
+{
+    int best_position = find_first_greater(A[v]);
+    minimum_ending_of_length[best_position].push(A[v]);
+
+    LIS_here[v] = find_LIS();
+
+    for(int child_v : tree[v])
+    {
+        if(child_v == parent_v)
+        {
+            continue;
+        }
+
+        dfs(child_v, v);
+    }
+
+    minimum_ending_of_length[best_position].pop();
+}
+
+int main()
+{
+    int no_of_vertices;
+    cin >> no_of_vertices;
+
+    for(int i = 1; i <= no_of_vertices; i++)
+    {
+        cin >> A[i];
+    }
+
+    int no_of_edges = no_of_vertices - 1;
+    for(int i = 1; i <= no_of_edges; i++)
+    {
+        int u, v;
+        cin >> u >> v;
+
+        tree[u].push_back(v);
+        tree[v].push_back(u);
+    }
+
+    dfs(1, 0);
+
+    for(int v = 1; v <= no_of_vertices; v++)
+    {
+        cout << LIS_here[v] << "\n";
+    }
+
+    return 0;
+}
