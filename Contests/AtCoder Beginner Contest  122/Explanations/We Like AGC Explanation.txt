@@ -1,0 +1,84 @@
+The key idea here is that it is not only strings of the form - AGC, ACG, GAC that we need to watch out for ... But also strings of length 4 like - A_GC, AG_C, AGC_ and _AGC
+
+So, we will maintain f(i, xyz) which represents the number of strings of length i which ends with xyz. 
+
+Now, to establish the transition, we will iterate over all possibilities w, such that 'wxyz' is a valid four-letter string and add f(i - 1, wxy) to f(i, xyz). 
+
+----
+
+Here is how we check if a 4-length string is good or not.
+
+long long no_of_strings[N][NO_OF_LETTERS][NO_OF_LETTERS][NO_OF_LETTERS];
+char letter[NO_OF_LETTERS] = {'A', 'C', 'G', 'T'};
+
+int ok(int last_1, int last_2, int last_3, int last_4)
+{
+    char l1 = letter[last_1], l2 = letter[last_2], l3 = letter[last_3], l4 = letter[last_4];
+
+    if(l1 == 'A' && l2 == 'G' && l4 == 'C')
+        return false;
+    if(l1 == 'A' && l3 == 'G' && l4 == 'C')
+        return false;
+    if(l1 == 'A' && l2 == 'G' && l3 == 'C')
+        return false;
+    if(l2 == 'A' && l3 == 'G' && l4 == 'C')
+        return false;
+    if(l1 == 'G' && l2 == 'A' && l3 == 'C')
+        return false;
+    if(l2 == 'G' && l3 == 'A' && l4 == 'C')
+        return false;
+    if(l1 == 'A' && l2 == 'C' && l3 == 'G')
+        return false;
+    if(l2 == 'A' && l3 == 'C' && l4 == 'G')
+        return false;
+
+    return true;
+}
+
+-----
+
+We have established the recurrence, but keep in mind that the case for i = 1, 2 are special cases because these strings do not have suffixes of length 3 !
+
+So for convenience, we can assume that the character at position 0, and -1 is 'T'. 
+
+Here is how I handled it - 
+
+if(i == 1)
+{
+    no_of_strings[i][last_1][T_INDEX][T_INDEX] = 1;
+}
+else if(i == 2)
+{
+    no_of_strings[i][last_1][last_2][T_INDEX] = 4;
+}
+
+Suppose for i = 1 case, I always update f(1, xTT) only. The reason is that I don't want to over count. 
+
+Suppose we set every combination of f(1, xyz) = 1, then when we are counting the answer for i = 1, we will be counting the answer as 64 ! When it is actually just 1. So we ensure that for every possible last digit, we are updating only one state rather than 64 states. 
+
+Similarly for the i = 2 case. We hard-code the third index. This ensures that for every unique pair, we only only update one state, rather than 4 states. 
+
+This helps us in counting correctly. 
+
+---
+
+The i = 3 case is also a special case ! Although i = 3 does have a substring of length 3 in the end, it cannot transition to i - 1, with a suffix of length 3. 
+
+So, we must treat it differently. 
+
+For i = 3, we will just check if the last 3 letters form a good string and then we will update it. 
+
+Suppose xyz is a good string, then we will set f(3, xyz) = 1
+
+---
+
+From i >= 4, it is very easy 
+
+else if(ok(last_4, last_3, last_2, last_1))
+{
+     no_of_strings[i][last_1][last_2][last_3] += no_of_strings[i - 1][last_2][last_3][last_4];
+ }
+
+----
+
+Actually, the constraints of the problem start from 3 so they will not test the corner cases of N = 1 and N = 2 but it is still good to have !
