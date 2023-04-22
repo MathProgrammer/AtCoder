@@ -1,0 +1,39 @@
+The effective impact of value is (value[i] - cost[i]). 
+We can be greedy and take all items with a positive effective value 
+
+-----
+
+int main()
+{
+    int no_of_elements;
+    cin >> no_of_elements;
+
+    vector <int> value(no_of_elements + 1);
+    for(int i = 1; i <= no_of_elements; i++)
+    {
+        cin >> value[i];
+    }
+
+    vector <int> cost(no_of_elements + 1);
+    for(int i = 1; i <= no_of_elements; i++)
+    {
+        cin >> cost[i];
+    }
+
+    for(int i = 1; i <= no_of_elements; i++)
+    {
+        value[i] -= cost[i];
+    }
+
+    int answer = 0;
+    for(int i = 1; i <= no_of_elements; i++)
+    {
+        if(value[i] > 0)
+        {
+            answer += value[i];
+        }
+    }
+
+    cout << answer << "\n";
+    return 0;
+}

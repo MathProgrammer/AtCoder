@@ -1,0 +1,20 @@
+Biscuits are only produced at integer points so we need not worry about + 0.5
+There are (T/A) different time intervals. 
+Each interval contributes B 
+
+Total biscuits = (T/A)B 
+
+The order of operations should be correct 
+
+-----
+
+int main()
+{
+    int A, B, T;
+    cin >> A >> B >> T;
+
+    int total = (T/A)*B;
+    cout << total << "\n";
+
+    return 0;
+}
