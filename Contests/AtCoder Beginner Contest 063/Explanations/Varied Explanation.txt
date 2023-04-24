@@ -1,0 +1,26 @@
+Put all the characters of the string in a set 
+Set only contains unique characters 
+
+If the size of the string and set are equal, the string consists of only unique characters
+
+-----
+
+#include <iostream>
+#include <set>
+
+using namespace std;
+
+int main()
+{
+    string S;
+    cin >> S;
+
+    set <char> distinct;
+    for(int i = 0; i < S.size(); i++)
+    {
+        distinct.insert(S[i]);
+    }
+
+    cout << (distinct.size() == S.size() ? "yes" : "no") << "\n";
+    return 0;
+}

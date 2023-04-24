@@ -1,0 +1,100 @@
+Fact - If it is possible to do it in  x Explosions, it is also possible to do it in x + 1 Explostions. 
+
+(After x Explosions, everyone has health <= 0. Just make another explosion.)
+
+If is can't be done in x Explosions, it can't be done in x - 1 Explosions either. 
+
+-------------------------------------------
+
+This means we can binary search to see which x it can be done with !
+
+int left_explosions = 1, right_explosions = 1e9;
+    while(left_explosions <= right_explosions)
+    {
+    	int mid_explosions = (left_explosions + right_explosions) >> 1;
+
+    	if(possible(health, A, B, mid_explosions))
+    	{
+    		if(mid_explosions == left_explosions || !possible(health, A, B, mid_explosions - 1))
+    		{
+    			cout << mid_explosions;
+    			break;
+    		}
+    		else
+    		{
+    			right_explosions = mid_explosions - 1;
+    		}
+    	}
+    	else
+    	{
+    		left_explosions = mid_explosions + 1;
+    	}
+    }
+
+-----------------------------------------
+
+How do we check if it's possible to do it with x Explosions ? 
+
+This is the tricky part. It's not so straightforward. 
+
+Here's the main insight. If we have done 1 Explosion, 
+Then the health of every monster reduces by B. 
+One monster reduces by (A - B)
+
+So, we have done x Explosions, reduce the health of every
+monster by xB first. 
+
+Then look at all the monsters who's health is > 0 right now
+
+Reduce each monster's health by (A-B) till it becomes <= 0
+
+If the number of such required operations is <= x, then it's possible. Else it's not. 
+
+int possible(vector <LL> H, LL A, LL B, LL explosions)
+{
+	for(int i = 1; i < H.size(); i++)
+	{
+		H[i] -= (explosions*B);
+	}
+
+	LL explosions_used = 0;
+	for(int i = H.size() - 1; i > 0 && H[i] > 0; i--)
+	{
+		while(H[i] > 0)
+		{
+			H[i] -= (A- B);
+			explosions_used++;
+		}
+	}
+
+	return (explosions_used <= explosions);
+}
+
+-----------------------------------------
+
+That's too slow ... We can improve the speed by realising we don't need to perform the subtractions one by one. We can just perform division !
+
+Rather than keep subtracting (A - B)
+
+We notice we will perform ceil(H[i]/(A- B)) such operations. Here's how we do it - 
+
+int possible(vector <LL> H, LL A, LL B, LL explosions)
+{
+	for(int i = 1; i < H.size(); i++)
+	{
+		H[i] -= (explosions*B);
+	}
+
+	LL explosions_used = 0;
+	for(int i = H.size() - 1; i > 0 && H[i] > 0; i--)
+	{
+		explosions_used += ceil(H[i], A - B);
+	}
+
+	return (explosions_used <= explosions);
+}
+
+Now we are performing each check in approximately O(N) time.
+We perform O(log N) checks. 
+
+Overall, O(N Log N) complexity.  
