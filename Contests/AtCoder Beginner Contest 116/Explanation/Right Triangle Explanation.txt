@@ -1,0 +1,16 @@
+The area of a right triangle is (base x height)/2 
+
+It is guaranteed that the area of the triangle is an integer in this problem so we don't need to handle floating points 
+
+------
+
+int main()
+{
+    int height, base, hypotenuse;
+    cin >> height >> base >> hypotenuse;
+
+    int area = (height*base)/2;
+    cout << area << "\n";
+
+    return 0;
+}

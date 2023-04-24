@@ -1,0 +1,55 @@
+We have to ask ourselves how many segments run through i ? 
+
+Segments Run through i = Segments Run through (i - 1) - Segments Ending at (i - 1) + segments starting at (i)
+
+Case 1
+
+If (A[i] > A[i - 1])
+
+It means that (A[i] - A[i - 1]) new segments start at i 
+
+------
+
+Case 2 
+
+If (A[i] < A[i - 1])
+
+It means that (A[i - 1] - A[i]) segments end at (i - 1)
+
+-----
+
+Case 3 
+
+If (A[i] = A[i - 1]) 
+
+It means that the same number of segments run through both i and (i - 1)
+
+------
+
+Let us add the number of segments starting at every position from i = 1 to N 
+
+This is max(0, A[i] - A[i - 1]) 
+
+-----
+
+int main()
+{
+    int no_of_elements;
+    cin >> no_of_elements;
+
+    vector <int> A(no_of_elements + 1);
+    for(int i = 1; i <= no_of_elements; i++)
+    {
+        cin >> A[i];
+    }
+
+    int segments = 0;
+    for(int i = 1; i <= no_of_elements; i++)
+    {
+        int segments_starting_here = max(0, A[i] - A[i - 1]);
+        segments += segments_starting_here;
+    }
+
+    cout << segments << "\n";
+    return 0;
+}
