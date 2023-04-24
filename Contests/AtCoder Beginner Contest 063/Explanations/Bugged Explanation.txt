@@ -1,8 +1,8 @@
-Case 1 - S is a multiple of 10
+Case 1 - S is not a multiple of 10
 
 Then, the answer is S
 
-Case 2 - S is not a multiple of 10
+Case 2 - S is a multiple of 10
 
 Then the answer is S - smallest non_multiple
 
